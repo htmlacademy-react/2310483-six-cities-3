@@ -1,4 +1,4 @@
-import OfferPreview from '../shared/components/OfferPreview.tsx';
+import OfferPreview from '../../shared/components/OfferPreview/OfferPreview.tsx';
 
 type MainPageProps = {
   offersCount: number;
