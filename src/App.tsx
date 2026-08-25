@@ -42,7 +42,7 @@ const App = ({data}: AppProps) => (
           />
           <Route
             path={Paths.Offer}
-            element={<OffersPage id={'1'}/>}
+            element={<OffersPage id={'2'}/>}
           />
         </Route>
       </Routes>
