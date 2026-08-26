@@ -16,40 +16,38 @@ type AppProps = {
 }
 
 const App = ({data: {offers, comments}}: AppProps) => (
-  <body>
-    <BrowserRouter>
-      <Routes>
-        <Route path={Paths.Main}>
-          <Route
-            index
-            element={
-              <MainPage offers={offers}/>
-            }
-          />
-          <Route
-            path={Paths.Login}
-            element={<LoginPage/>}
-          />
-          <Route
-            path={Paths.Not_Fount}
-            element={<NotFoundPage/>}
-          />
-          <Route
-            path='/favorites'
-            element={
-              <PrivateRoute authStatus={AuthStatus.Auth}>
-                <FavoritesPage offers={offers}/>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={Paths.Offer}
-            element={<OffersPage offers={offers} comments={comments}/>}
-          />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </body>
+  <BrowserRouter>
+    <Routes>
+      <Route path={Paths.Main}>
+        <Route
+          index
+          element={
+            <MainPage offers={offers}/>
+          }
+        />
+        <Route
+          path={Paths.Login}
+          element={<LoginPage/>}
+        />
+        <Route
+          path={Paths.Not_Fount}
+          element={<NotFoundPage/>}
+        />
+        <Route
+          path='/favorites'
+          element={
+            <PrivateRoute authStatus={AuthStatus.Auth}>
+              <FavoritesPage offers={offers}/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={Paths.Offer}
+          element={<OffersPage offers={offers} comments={comments}/>}
+        />
+      </Route>
+    </Routes>
+  </BrowserRouter>
 );
 
 export default App;
