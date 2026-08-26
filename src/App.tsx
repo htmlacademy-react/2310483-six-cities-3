@@ -6,14 +6,16 @@ import FavoritesPage from './pages/FavoritesPage/FavoritesPage';
 import OffersPage from './pages/OfferPage/OfferPage';
 import PrivateRoute from './shared/components/PrivateRoute/PrivateRoute';
 import {AuthStatus, Paths} from './shared/api/const';
+import { Offer, Comment } from './shared/api/models';
 
 type AppProps = {
   data: {
-    offersCount: number;
+    offers: Offer[];
+    comments: Comment[];
   };
 }
 
-const App = ({data}: AppProps) => (
+const App = ({data: {offers, comments}}: AppProps) => (
   <body>
     <BrowserRouter>
       <Routes>
@@ -21,7 +23,7 @@ const App = ({data}: AppProps) => (
           <Route
             index
             element={
-              <MainPage offersCount={data.offersCount}/>
+              <MainPage offers={offers}/>
             }
           />
           <Route
@@ -35,14 +37,14 @@ const App = ({data}: AppProps) => (
           <Route
             path='/favorites'
             element={
-              <PrivateRoute authStatus={AuthStatus.No_Auth}>
-                <FavoritesPage data={1}/>
+              <PrivateRoute authStatus={AuthStatus.Auth}>
+                <FavoritesPage offers={offers}/>
               </PrivateRoute>
             }
           />
           <Route
             path={Paths.Offer}
-            element={<OffersPage id={'2'}/>}
+            element={<OffersPage offers={offers} comments={comments}/>}
           />
         </Route>
       </Routes>
