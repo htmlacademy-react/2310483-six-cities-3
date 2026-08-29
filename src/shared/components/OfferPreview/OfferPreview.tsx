@@ -4,6 +4,7 @@ import { Offer } from '../../api/models';
 type OfferPreviewProps = {
   offer: Offer;
   onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   isFavoritesCard?: boolean;
 }
 
@@ -37,12 +38,14 @@ const OfferPreview = ({offer: {
   images,
 },
 onMouseEnter,
+onMouseLeave,
 isFavoritesCard
 }: OfferPreviewProps) => {
+
   const styles = isFavoritesCard ? offerPreviewClassNames.favorites : offerPreviewClassNames.main;
 
   return (
-    <article onMouseEnter={onMouseEnter} className={styles.card}>
+    <article onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={styles.card}>
       {
         isPremium &&
         <div className="place-card__mark">
