@@ -18,7 +18,7 @@ const OffersPage = ({
 }: OffersPageProps) => {
   const params = useParams();
   const currentOffer = offers.find((offer) => offer.id === params.id);
-
+  const restOffers = offers.filter((offer) => offer.id !== currentOffer?.id);
   if (!currentOffer) {
     return <NotFoundPage/>;
   }
@@ -129,9 +129,11 @@ const OffersPage = ({
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <OfferPreview offer={offers[2]}/>
-              <OfferPreview offer={offers[3]}/>
-              <OfferPreview offer={offers[4]}/>
+              {
+                restOffers.map((offer) => (
+                  <OfferPreview key={offer.id} offer={offer} isFavoritesCard={false}/>
+                ))
+              }
             </div>
           </section>
         </div>
