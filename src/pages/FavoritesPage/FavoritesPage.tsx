@@ -1,7 +1,7 @@
 import { Offer } from '../../shared/api/models';
 import OfferPreview from '../../shared/components/OfferPreview/OfferPreview';
 import Header from '../../shared/components/Header/Header';
-import { AuthStatus } from '../../shared/api/const';
+import { AuthStatus, PageType } from '../../shared/api/const';
 
 type FavoritesPageProps = {
   offers: Offer[];
@@ -85,7 +85,7 @@ const FavoritesPage = ({offers}: FavoritesPageProps) => {
                       <OfferPreview
                         key={offer.id}
                         offer={offer}
-                        isFavoritesCard
+                        pageType={PageType.Favorites}
                       />
                     ))
                   }

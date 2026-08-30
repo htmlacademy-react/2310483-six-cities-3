@@ -4,31 +4,27 @@ import 'leaflet/dist/leaflet.css';
 import { City, Offer } from '../../api/models';
 import useMap from './hooks/useMap';
 import useMarkers from './hooks/useMarkers';
+import { PageType } from '../../api/const';
+import { ACTIVE_MARKER, DEFAULT_MARKER } from './const';
+
 
 type MapProps = {
   city: City;
   offers: Offer[];
   selectedOffer: Offer | null;
+  pageType?: PageType;
 };
 
-const defaultMarker = leaflet.icon({
-  iconUrl: 'img/pin.svg',
-});
-
-const activeMarker = leaflet.icon({
-  iconUrl: 'img/pin-active.svg',
-});
-
-const Map = ({city, offers, selectedOffer}: MapProps) => {
+const Map = ({city, offers, selectedOffer, pageType = PageType.Main}: MapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const map = useMap(mapRef, city);
-  const markersRef = useMarkers(map, offers, defaultMarker);
+  const markersRef = useMarkers(map, offers, selectedOffer?.id);
   const activeMarkerRef = useRef<leaflet.Marker | null>(null);
 
   useEffect(
     () => {
-      if (activeMarkerRef) {
-        activeMarkerRef.current?.setIcon(defaultMarker);
+      if (activeMarkerRef.current) {
+        activeMarkerRef.current?.setIcon(DEFAULT_MARKER);
         activeMarkerRef.current = null;
       }
 
@@ -42,7 +38,7 @@ const Map = ({city, offers, selectedOffer}: MapProps) => {
         return;
       }
 
-      marker.setIcon(activeMarker);
+      marker.setIcon(ACTIVE_MARKER);
       activeMarkerRef.current = marker;
     },
     [selectedOffer, markersRef]
@@ -51,7 +47,10 @@ const Map = ({city, offers, selectedOffer}: MapProps) => {
   return(
     <div
       ref={mapRef}
-      style={{height: '100%', width: '100%'}}
+      style={{
+        height: '100%',
+        width: pageType === PageType.Offer ? '1144px' : '100%',
+        left: pageType === PageType.Offer ? 'calc(50% - 572px)' : '0'}}
     />
   );
 };
