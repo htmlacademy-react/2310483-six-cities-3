@@ -1,12 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../api/models';
-
-type OfferPreviewProps = {
-  offer: Offer;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-  isFavoritesCard?: boolean;
-}
+import { PageType } from '../../api/const';
 
 const offerPreviewClassNames = {
   favorites: {
@@ -25,39 +19,67 @@ const offerPreviewClassNames = {
       width: 260,
       height: 200,
     },
-    cardInfo: 'favorites__card-info place-card__info',
+    cardInfo: 'place-card__info',
+  },
+  offer: {
+    card: 'near-places__card place-card',
+    imageWrapper: 'near-places__image-wrapper place-card__image-wrapper',
+    imageSize: {
+      width: 260,
+      height: 200,
+    },
+    cardInfo: 'place-card__info',
   },
 };
 
-const OfferPreview = ({offer: {
-  id,
-  title,
-  type,
-  price,
-  isPremium,
-  images,
-},
-onMouseEnter,
-onMouseLeave,
-isFavoritesCard
-}: OfferPreviewProps) => {
+const getOfferPreviewStyles = (pageType: PageType) => {
+  switch (pageType) {
+    case PageType.Favorites:
+      return offerPreviewClassNames.favorites;
+    case PageType.Offer:
+      return offerPreviewClassNames.offer;
+    case PageType.Main:
+      return offerPreviewClassNames.main;
+  }
+};
 
-  const styles = isFavoritesCard ? offerPreviewClassNames.favorites : offerPreviewClassNames.main;
+type OfferPreviewProps = {
+  offer: Offer;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  pageType: PageType;
+}
 
+const OfferPreview = (
+  {
+    offer: {
+      id,
+      title,
+      type,
+      price,
+      isPremium,
+      images,
+    },
+    onMouseEnter,
+    onMouseLeave,
+    pageType
+  }: OfferPreviewProps) => {
+
+  const {card, imageWrapper, imageSize, cardInfo} = getOfferPreviewStyles(pageType);
   return (
-    <article onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={styles.card}>
+    <article onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={card}>
       {
         isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       }
-      <div className={styles.imageWrapper}>
+      <div className={imageWrapper}>
         <Link to={`/offer/${id}`}>
-          <img className="place-card__image" src={images[0]} width={styles.imageSize.width} height={styles.imageSize.height} alt="Place image"/>
+          <img className="place-card__image" src={images[0]} width={imageSize.width} height={imageSize.height} alt="Place image"/>
         </Link>
       </div>
-      <div className={styles.cardInfo}>
+      <div className={cardInfo}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}&nbsp;</b>

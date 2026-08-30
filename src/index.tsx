@@ -22,9 +22,11 @@ const data: {
   comments: generateComments(COMMENTS_COUNT),
 };
 
-data.offers.forEach(({location}, i) => {
+data.offers.forEach(({location, city}, i) => {
   location.latitude = coordinates[i][0];
   location.longitude = coordinates[i][1];
+  city.location.latitude = coordinates[i][0];
+  city.location.longitude = coordinates[i][1];
 });
 
 const root = ReactDOM.createRoot(

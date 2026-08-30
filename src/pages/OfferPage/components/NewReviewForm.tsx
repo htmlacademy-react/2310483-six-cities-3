@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const NewCommentForm = () => {
+const NewReviewForm = () => {
   const [formData, setFormData] = useState<{comment: string}>({
     comment: '',
   });
@@ -55,4 +55,4 @@ const NewCommentForm = () => {
   );
 };
 
-export default NewCommentForm;
+export default NewReviewForm;

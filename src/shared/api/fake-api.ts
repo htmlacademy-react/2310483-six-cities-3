@@ -22,7 +22,7 @@ export const generateLocation = (): mapLocation => (
   {
     latitude: faker.location.latitude(),
     longitude: faker.location.longitude(),
-    zoom: faker.number.int({min: 6, max: 10}),
+    zoom: 13,
   }
 );
 

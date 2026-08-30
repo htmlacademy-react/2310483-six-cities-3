@@ -1,11 +1,12 @@
-import { AuthStatus } from '../../shared/api/const';
+import { AuthStatus, PageType } from '../../shared/api/const';
 import { Offer, Comment } from '../../shared/api/models';
 import Header from '../../shared/components/Header/Header';
-import OfferPreview from '../../shared/components/OfferPreview/OfferPreview';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import OfferGallery from './components/OfferGallery';
-import OffersReviews from './components/OfferReviews';
+import OffersReviewsList from './components/OfferReviews/OfferReviewsList';
+import Map from '../../shared/components/Map/Map';
 import {useParams} from 'react-router-dom';
+import OffersPreviewsWrapper from '../../shared/components/OffersPreviewsWrapper/OffersPreviewsWrapper';
 
 type OffersPageProps = {
   offers: Offer[];
@@ -14,7 +15,7 @@ type OffersPageProps = {
 
 const OffersPage = ({
   offers,
-  comments
+  comments,
 }: OffersPageProps) => {
   const params = useParams();
   const currentOffer = offers.find((offer) => offer.id === params.id);
@@ -30,6 +31,7 @@ const OffersPage = ({
     isPremium,
     rating,
     description,
+    city,
     maxAdults,
     bedrooms,
     goods,
@@ -119,21 +121,24 @@ const OffersPage = ({
                 </div>
               </div>
               {
-                comments && <OffersReviews comments={comments}/>
+                comments && <OffersReviewsList comments={comments}/>
               }
             </div>
           </div>
-          <section className="offer__map map"></section>
+          <section className="offer__map map">
+            <Map
+              offers={offers}
+              city={city}
+              selectedOffer={currentOffer}
+              pageType={PageType.Offer}
+            />
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {
-                restOffers.map((offer) => (
-                  <OfferPreview key={offer.id} offer={offer} isFavoritesCard={false}/>
-                ))
-              }
+              <OffersPreviewsWrapper offers={restOffers} pageType={PageType.Offer}/>
             </div>
           </section>
         </div>

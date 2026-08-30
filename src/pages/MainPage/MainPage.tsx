@@ -1,10 +1,10 @@
 import { AuthStatus } from '../../shared/api/const.ts';
 import { City, Offer } from '../../shared/api/models.ts';
 import Header from '../../shared/components/Header/Header.tsx';
-import OffersPreviewsWrapper from '../../shared/components/OffersPreviewsWrapper/OffersPreviewsWrapper.tsx';
 import EmptyOffersList from './components/EmptyOffersList.tsx';
 import Map from '../../shared/components/Map/Map.tsx';
 import { useState } from 'react';
+import OffersList from './components/OffersList.tsx';
 
 type MainPageProps = {
   offers?: Offer[];
@@ -69,43 +69,15 @@ const MainPage = ({offers}: MainPageProps) => {
           </section>
         </div>
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers?.length} places to stay in Amsterdam</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by&nbsp;</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                {/* <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul> */}
-              </form>
-              {
-                offers
-                  ?
-                  <OffersPreviewsWrapper onOfferHover={handleOfferHover} offers={offers}/>
-                  :
-                  <EmptyOffersList/>
-              }
-            </section>
-            <div className="cities__right-section">
-              {
-                offers
-                  &&
-                  <section className="cities__map map">
-                    <Map offers={offers} selectedOffer={selectedOffer} city={city}/>
-                  </section>
-              }
-            </div>
-          </div>
+          {
+            offers
+              ?
+              <OffersList offers={offers} handleOfferHover={handleOfferHover}>
+                <Map offers={offers} selectedOffer={selectedOffer} city={city}/>
+              </OffersList>
+              :
+              <EmptyOffersList />
+          }
         </div>
       </main>
     </div>);

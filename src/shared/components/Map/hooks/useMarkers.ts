@@ -1,8 +1,9 @@
 import {useEffect, useRef} from 'react';
 import leaflet, { LayerGroup } from 'leaflet';
 import { Offer } from '../../../api/models';
+import {DEFAULT_MARKER, ACTIVE_MARKER} from '../const';
 
-const useMarkers = (map: leaflet.Map | null, offers: Offer[], icon: leaflet.Icon) => {
+const useMarkers = (map: leaflet.Map | null, offers: Offer[], offerId?: string) => {
   const markersLayerRef = useRef<LayerGroup | null>(null);
   const markersRef = useRef<Map<string, leaflet.Marker>>(
     new globalThis.Map<string, leaflet.Marker>()
@@ -27,7 +28,7 @@ const useMarkers = (map: leaflet.Map | null, offers: Offer[], icon: leaflet.Icon
           lng: longitude,
         },
         {
-          icon: icon,
+          icon: id === offerId ? ACTIVE_MARKER : DEFAULT_MARKER,
         }
         );
         marker.addTo(markersLayer);
@@ -35,7 +36,7 @@ const useMarkers = (map: leaflet.Map | null, offers: Offer[], icon: leaflet.Icon
         markersRef.current.set(id, marker);
       });
     },
-    [map, offers, icon],
+    [map, offers, offerId],
   );
 
   return markersRef;
