@@ -11,7 +11,7 @@ export type Offer = {
   type: string;
   price: number;
   city: City;
-  location: mapLocation;
+  location: MapLocation;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
@@ -25,10 +25,10 @@ export type Offer = {
 
 export type City = {
   name: string;
-  location: mapLocation;
+  location: MapLocation;
 };
 
-export type mapLocation = {
+export type MapLocation = {
   latitude: number;
   longitude: number;
   zoom: number;
@@ -52,3 +52,5 @@ export type Comment = {
   comment: string;
   rating: number;
 }
+
+export type CitiesNames = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];

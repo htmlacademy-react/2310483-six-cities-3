@@ -1,7 +1,7 @@
 import {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { City, Offer } from '../../api/models';
+import { MapLocation, Offer } from '../../api/models';
 import useMap from './hooks/useMap';
 import useMarkers from './hooks/useMarkers';
 import { PageType } from '../../api/const';
@@ -9,15 +9,15 @@ import { ACTIVE_MARKER, DEFAULT_MARKER } from './const';
 
 
 type MapProps = {
-  city: City;
+  center: MapLocation;
   offers: Offer[];
   selectedOffer: Offer | null;
   pageType?: PageType;
 };
 
-const Map = ({city, offers, selectedOffer, pageType = PageType.Main}: MapProps) => {
+const Map = ({center, offers, selectedOffer, pageType = PageType.Main}: MapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, center);
   const markersRef = useMarkers(map, offers, selectedOffer?.id);
   const activeMarkerRef = useRef<leaflet.Marker | null>(null);
 

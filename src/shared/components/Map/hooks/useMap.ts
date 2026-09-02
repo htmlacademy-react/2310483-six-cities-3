@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import leaflet, { Map } from 'leaflet';
-import { City } from '../../../api/models';
+import { MapLocation } from '../../../api/models';
 import { TILE_LAYER, TILE_LAYER_ATTRIBUTION } from '../const';
 
-const useMap = (mapRef: React.RefObject<HTMLElement>, city: City) => {
+const useMap = (mapRef: React.RefObject<HTMLElement>, center: MapLocation) => {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef<boolean>(false);
 
@@ -12,10 +12,10 @@ const useMap = (mapRef: React.RefObject<HTMLElement>, city: City) => {
       if (mapRef.current !== null && !isRenderedRef.current) {
         const instance: Map = leaflet.map(mapRef.current, {
           center: {
-            lat: city.location.latitude,
-            lng: city.location.longitude,
+            lat: center.latitude,
+            lng: center.longitude,
           },
-          zoom: city.location.zoom
+          zoom: center.zoom
         });
 
         leaflet
@@ -30,9 +30,20 @@ const useMap = (mapRef: React.RefObject<HTMLElement>, city: City) => {
         setMap(instance);
         isRenderedRef.current = true;
       }
-
     },
-    [mapRef, city]
+    [mapRef, center]
+  );
+
+  useEffect(
+    () => {
+      if (map !== null) {
+        map.setView({
+          lat: center.latitude,
+          lng: center.longitude
+        });
+      }
+    },
+    [center, map]
   );
 
   return map;

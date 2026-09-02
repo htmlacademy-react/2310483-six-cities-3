@@ -1,23 +1,16 @@
 import { AuthStatus, PageType } from '../../shared/api/const';
-import { Offer, Comment } from '../../shared/api/models';
 import Header from '../../shared/components/Header/Header';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import OfferGallery from './components/OfferGallery';
-import OffersReviewsList from './components/OfferReviews/OfferReviewsList';
 import Map from '../../shared/components/Map/Map';
 import {useParams} from 'react-router-dom';
 import OffersPreviewsWrapper from '../../shared/components/OffersPreviewsWrapper/OffersPreviewsWrapper';
+import { useAppSelector } from '../../shared/api/store/hooks';
+import { getFilteredOffers } from '../../shared/api/store/selector';
 
-type OffersPageProps = {
-  offers: Offer[];
-  comments: Comment[];
-}
-
-const OffersPage = ({
-  offers,
-  comments,
-}: OffersPageProps) => {
+const OfferPage = () => {
   const params = useParams();
+  const offers = useAppSelector(getFilteredOffers);
   const currentOffer = offers.find((offer) => offer.id === params.id);
   const restOffers = offers.filter((offer) => offer.id !== currentOffer?.id);
   if (!currentOffer) {
@@ -31,7 +24,6 @@ const OffersPage = ({
     isPremium,
     rating,
     description,
-    city,
     maxAdults,
     bedrooms,
     goods,
@@ -121,14 +113,14 @@ const OffersPage = ({
                 </div>
               </div>
               {
-                comments && <OffersReviewsList comments={comments}/>
+                // comments && <OffersReviewsList comments={comments}/>
               }
             </div>
           </div>
           <section className="offer__map map">
             <Map
               offers={offers}
-              city={city}
+              center={currentOffer.location}
               selectedOffer={currentOffer}
               pageType={PageType.Offer}
             />
@@ -147,4 +139,4 @@ const OffersPage = ({
   );
 };
 
-export default OffersPage;
+export default OfferPage;

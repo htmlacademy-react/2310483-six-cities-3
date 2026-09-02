@@ -1,11 +1,8 @@
-import { Offer } from '../../shared/api/models';
 import OfferPreview from '../../shared/components/OfferPreview/OfferPreview';
 import Header from '../../shared/components/Header/Header';
 import { AuthStatus, PageType } from '../../shared/api/const';
-
-type FavoritesPageProps = {
-  offers: Offer[];
-}
+import { useAppSelector } from '../../shared/api/store/hooks';
+import { getOffers } from '../../shared/api/store/selector';
 
 const FavoritesEmptyPageTemplate = () => (
   <div className="page page--favorites-empty">
@@ -56,7 +53,8 @@ const FavoritesEmptyPageTemplate = () => (
   </div>
 );
 
-const FavoritesPage = ({offers}: FavoritesPageProps) => {
+const FavoritesPage = () => {
+  const offers = useAppSelector(getOffers);
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
 
   if (favoriteOffers.length === 0) {
