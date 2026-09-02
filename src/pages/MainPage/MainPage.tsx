@@ -6,13 +6,13 @@ import Map from '../../shared/components/Map/Map.tsx';
 import { useState } from 'react';
 import OffersList from './components/OffersList.tsx';
 import CitiesList from './components/CitiesList.tsx';
-import { getFilteredOffers } from '../../shared/api/store/selector.ts';
+import { getCity, getFilteredOffers } from '../../shared/api/store/selector.ts';
 import { useAppSelector } from '../../shared/api/store/hooks.ts';
 
 const MainPage = () => {
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
   const offers = useAppSelector(getFilteredOffers);
-
+  const city = useAppSelector(getCity);
   const handleOfferHover = (id: string) => {
     const offer = offers?.find((item) => item.id === id);
     setSelectedOffer(offer || null);
