@@ -2,10 +2,20 @@ import { faker } from '@faker-js/faker';
 import {
   Offer,
   City,
-  mapLocation,
+  MapLocation,
   User,
   Comment,
 } from './models';
+import { Cities } from './const';
+
+const CitiesCoordinates = [
+  [48.85, 2.35],
+  [50.9333, 6.95],
+  [50.85, 4.35],
+  [52.374, 4.88969],
+  [53.58, 10.02],
+  [51.22, 6.78]
+];
 
 const Goods: string[] = [
   'Wi-Fi',
@@ -18,20 +28,31 @@ const Goods: string[] = [
   'Dishwasher',
 ];
 
-export const generateLocation = (): mapLocation => (
+export const generateCities = (): City[] => Cities.map((city, i) => (
   {
-    latitude: faker.location.latitude(),
-    longitude: faker.location.longitude(),
-    zoom: 13,
+    name: city,
+    location: {
+      latitude: CitiesCoordinates[i][0],
+      longitude: CitiesCoordinates[i][1],
+      zoom: 13
+    },
   }
-);
+));
 
-export const generateCity = (): City => (
-  {
-    name: faker.location.city(),
-    location: generateLocation(),
-  }
-);
+export const generateLocation = (city: City): MapLocation => {
+  const coordinates = faker.location.nearbyGPSCoordinate({
+    origin: [city.location.latitude, city.location.longitude],
+    radius: 1,
+  });
+
+  return (
+    {
+      latitude: coordinates[0],
+      longitude: coordinates[1],
+      zoom: 13,
+    }
+  );
+};
 
 export const generateUser = (isPro: boolean): User => (
   {
@@ -54,14 +75,14 @@ export const generateComment = (): Comment => (
 
 export const generateComments = (count: number): Comment[] => Array.from({length: count}, () => generateComment());
 
-export const generateOffer = (): Offer => (
+export const generateOffer = (city: City): Offer => (
   {
     id: faker.string.uuid(),
     title: faker.lorem.sentence({min: 2, max: 6}),
     type: faker.datatype.boolean() ? 'Apartment' : 'Room',
     price: faker.number.int({min: 0, max: 3000}),
-    city: generateCity(),
-    location: generateLocation(),
+    city: city,
+    location: generateLocation(city),
     isFavorite: faker.datatype.boolean(),
     isPremium: faker.datatype.boolean(),
     rating: faker.number.int({min: 1, max: 5}),
@@ -78,4 +99,8 @@ export const generateOffer = (): Offer => (
   }
 );
 
-export const generateOffers = (count: number): Offer[] => Array.from({length: count}, () => generateOffer());
+export const generateOffers = (count: number): Offer[] => {
+  const cities = generateCities();
+
+  return Array.from({length: count}, () => generateOffer(cities[faker.number.int({min: 0, max: cities.length - 1})]));
+};

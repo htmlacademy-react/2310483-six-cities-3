@@ -1,3 +1,5 @@
+import { CitiesNames } from './models';
+
 export enum Paths {
   Main = '/',
   Offer = '/offer/:id',
@@ -12,14 +14,14 @@ export enum AuthStatus {
   Unknown = 'UNKNOWN',
 }
 
-export enum Cities {
-  Paris = 'Paris',
-  Cologne = 'Cologne',
-  Brussels = 'Brussels',
-  Amsterdam = 'Amsterdam',
-  Hamburg = 'Hamburg',
-  Dusseldorf = 'Dusseldorf',
-}
+export const Cities: CitiesNames = [
+  'Paris',
+  'Cologne',
+  'Brussels',
+  'Amsterdam',
+  'Hamburg',
+  'Dusseldorf',
+];
 
 export enum PageType {
   Main = 'main',

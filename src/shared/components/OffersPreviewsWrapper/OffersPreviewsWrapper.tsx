@@ -37,14 +37,10 @@ const OffersPreviewsWrapper = ({offers, onOfferHover, pageType = PageType.Main}:
       {offers.map((offer) => (
         <OfferPreview
           onMouseEnter={
-            () => {
-              handleOfferHover(offer.id);
-            }
+            () => handleOfferHover(offer.id)
           }
           onMouseLeave={
-            () => {
-              handleOfferBlur();
-            }
+            () => handleOfferBlur()
           }
           key={offer.id}
           offer={offer}
