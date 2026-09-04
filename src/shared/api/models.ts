@@ -52,5 +52,3 @@ export type Comment = {
   comment: string;
   rating: number;
 }
-
-export type CitiesNames = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
