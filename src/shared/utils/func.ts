@@ -9,3 +9,10 @@ export const getFavoriteOffersCb = (acc: FavoriteOffers, offer: Offer): Favorite
   acc.set(offer.city.name, [offer]);
   return acc;
 };
+
+export const OffersSortCb = {
+  'Popular': (): number => 0,
+  'Price: low to high': (a: Offer, b: Offer): number => a.price - b.price,
+  'Price: high to low': (a: Offer, b: Offer): number => b.price - a.price,
+  'Top rated first': (a: Offer, b: Offer): number => b.rating - a.rating
+};
