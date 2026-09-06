@@ -9,7 +9,7 @@
 .spinner {
   background-image: url('public/img/pin.svg');
   background-repeat: no-repeat;
-  background-size: 50px 70px;
+  background-size: 35px 50px;
   background-position: center;
   width: 100px;
   height: 100px;
