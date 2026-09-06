@@ -1,11 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Offer } from '../models';
+import { AuthStatus } from '../const';
 
-export enum ActionTypes {
-  CityChanged = 'city/changed',
-  OffersLoaded = 'offers/loaded',
-}
+export const changeCity = createAction<string>('city/change');
 
-export const cityChanged = createAction<string>(ActionTypes.CityChanged);
+export const loadOffers = createAction<Offer[]>('offers/load');
 
-export const offersLoaded = createAction<Offer[]>(ActionTypes.OffersLoaded);
+export const requierAuth = createAction<AuthStatus>('user/requireAuth');
+
+export const setError = createAction<string | null>('error/set');
+
+export const setIsOffersFetching = createAction<boolean>('offers/setIsOffersFetching');

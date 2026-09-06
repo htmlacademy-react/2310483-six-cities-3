@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Cities } from '../../../shared/api/const';
 import classnames from 'classnames';
 import { useAppDispatch } from '../../../shared/api/store/hooks';
-import { ActionTypes } from '../../../shared/api/store/action';
 
 const CitiesList = () => {
   const [currentCity, setCurrentCity] = useState<string>('Paris');
@@ -12,7 +11,7 @@ const CitiesList = () => {
     if (city !== currentCity) {
       setCurrentCity(city);
       dispatch({
-        type: ActionTypes.CityChanged,
+        type: 'city/change',
         payload: city,
       });
     }

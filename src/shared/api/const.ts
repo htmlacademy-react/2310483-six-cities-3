@@ -3,7 +3,15 @@ export enum Paths {
   Offer = '/offer/:id',
   Login = '/login',
   Favorites = '/favorites',
-  Not_Fount = '/*',
+  Not_Found = '/*',
+}
+
+export enum ApiPaths {
+  Login = '/login',
+  Logout = '/logout',
+  Favorites = '/favorite',
+  Offers = '/offers',
+  Comments = '/comments',
 }
 
 export enum AuthStatus {
@@ -26,3 +34,5 @@ export const Cities = [
   'Hamburg',
   'Dusseldorf',
 ] as const;
+
+export const SHOW_ERROR_TIMEOUT = 2000 as const;

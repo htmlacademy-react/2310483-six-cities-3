@@ -1,0 +1,29 @@
+.spinnerContainer {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  background-image: url('public/img/pin.svg');
+  background-repeat: no-repeat;
+  background-size: 35px 50px;
+  background-position: center;
+  width: 100px;
+  height: 100px;
+  animation: 2s ease-in infinite running scale;
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

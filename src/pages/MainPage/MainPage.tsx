@@ -8,10 +8,18 @@ import OffersList from './components/OffersList.tsx';
 import CitiesList from './components/CitiesList.tsx';
 import { getFilteredOffers } from '../../shared/api/store/selector.ts';
 import { useAppSelector } from '../../shared/api/store/hooks.ts';
+import Spinner from '../../shared/components/Spinner/Spinner.tsx';
 
 const MainPage = () => {
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
   const offers = useAppSelector(getFilteredOffers);
+  const isOffersFetching = useAppSelector((state) => state.isOffersFetching);
+  if (isOffersFetching) {
+    return (
+      <Spinner />
+    );
+  }
+
   const handleOfferHover = (id: string) => {
     const offer = offers?.find((item) => item.id === id);
     setSelectedOffer(offer || null);

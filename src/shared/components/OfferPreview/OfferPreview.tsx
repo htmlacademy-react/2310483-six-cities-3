@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../api/models';
+import type { OfferPreview } from '../../api/models';
 import { PageType } from '../../api/const';
 
 const offerPreviewClassNames = {
@@ -44,7 +44,7 @@ const getOfferPreviewStyles = (pageType: PageType) => {
 };
 
 type OfferPreviewProps = {
-  offer: Offer;
+  offer: OfferPreview;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   pageType: PageType;
@@ -58,7 +58,7 @@ const OfferPreview = (
       type,
       price,
       isPremium,
-      images,
+      previewImage,
       rating
     },
     onMouseEnter,
@@ -77,7 +77,7 @@ const OfferPreview = (
       }
       <div className={imageWrapper}>
         <Link to={`/offer/${id}`}>
-          <img className="place-card__image" src={images[0]} width={imageSize.width} height={imageSize.height} alt="Place image"/>
+          <img className="place-card__image" src={previewImage} width={imageSize.width} height={imageSize.height} alt="Place image"/>
         </Link>
       </div>
       <div className={cardInfo}>
