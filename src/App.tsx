@@ -5,13 +5,15 @@ import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import FavoritesPage from './pages/FavoritesPage/FavoritesPage';
 import OfferPage from './pages/OfferPage/OfferPage';
 import PrivateRoute from './shared/components/PrivateRoute/PrivateRoute';
-import {AuthStatus, Paths} from './shared/api/const';
+import {Paths} from './shared/api/const';
 import ScrollToTop from './shared/components/ScrollToTop/ScrollToTop';
+import ErrorMessage from './shared/components/ErrorMessage/ErrorMessage';
 
 
 const App = () => (
   <BrowserRouter>
-    <ScrollToTop />
+    <ErrorMessage/>
+    <ScrollToTop/>
     <Routes>
       <Route path={Paths.Main}>
         <Route
@@ -31,7 +33,7 @@ const App = () => (
         <Route
           path={Paths.Favorites}
           element={
-            <PrivateRoute authStatus={AuthStatus.Auth}>
+            <PrivateRoute>
               <FavoritesPage/>
             </PrivateRoute>
           }

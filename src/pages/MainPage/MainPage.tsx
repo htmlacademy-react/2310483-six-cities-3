@@ -1,4 +1,3 @@
-import { AuthStatus } from '../../shared/api/const.ts';
 import { Offer } from '../../shared/api/models.ts';
 import Header from '../../shared/components/Header/Header.tsx';
 import EmptyOffersList from './components/EmptyOffersList.tsx';
@@ -9,12 +8,15 @@ import CitiesList from './components/CitiesList.tsx';
 import { getFilteredOffers } from '../../shared/api/store/selector.ts';
 import { useAppSelector } from '../../shared/api/store/hooks.ts';
 import Spinner from '../../shared/components/Spinner/Spinner.tsx';
+import { AuthStatus } from '../../shared/api/const.ts';
 
 const MainPage = () => {
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
+  const authStatus = useAppSelector((state) => state.authStatus);
   const offers = useAppSelector(getFilteredOffers);
   const isOffersFetching = useAppSelector((state) => state.isOffersFetching);
-  if (isOffersFetching) {
+
+  if (authStatus === AuthStatus.Unknown || isOffersFetching) {
     return (
       <Spinner />
     );
@@ -27,7 +29,7 @@ const MainPage = () => {
 
   return (
     <div className="page page--gray page--main">
-      <Header authStatus={AuthStatus.Auth} />
+      <Header authStatus={authStatus} />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">

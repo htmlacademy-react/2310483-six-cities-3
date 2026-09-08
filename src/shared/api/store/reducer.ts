@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { Offer } from '../models';
-import { changeCity, loadOffers, requierAuth, setError, setIsOffersFetching } from './action';
+import { changeCity, loadOffers, setAuthStatus, setError, setIsOffersFetching } from './action';
 import { AuthStatus } from '../const';
 
 export type Store = {
@@ -26,7 +26,7 @@ export const offersByCity = createReducer(initialState, ({addCase}) => {
   addCase(loadOffers, (state, { payload }) => {
     state.offers = payload;
   });
-  addCase(requierAuth, (state, { payload }) => {
+  addCase(setAuthStatus, (state, { payload }) => {
     state.authStatus = payload;
   });
   addCase(setError, (state, { payload }) => {

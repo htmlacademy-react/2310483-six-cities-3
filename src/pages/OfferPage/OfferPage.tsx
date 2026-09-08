@@ -1,4 +1,4 @@
-import { AuthStatus, PageType } from '../../shared/api/const';
+import { PageType } from '../../shared/api/const';
 import Header from '../../shared/components/Header/Header';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import OfferGallery from './components/OfferGallery';
@@ -11,6 +11,7 @@ import { getFilteredOffers } from '../../shared/api/store/selector';
 const OfferPage = () => {
   const params = useParams();
   const offers = useAppSelector(getFilteredOffers);
+  const authStatus = useAppSelector((state) => state.authStatus);
   const currentOffer = offers.find((offer) => offer.id === params.id);
   const restOffers = offers.filter((offer) => offer.id !== currentOffer?.id);
   if (!currentOffer) {
@@ -33,7 +34,7 @@ const OfferPage = () => {
 
   return (
     <div className="page">
-      <Header authStatus={AuthStatus.Auth} />
+      <Header authStatus={authStatus} />
       <main className="page__main page__main--offer">
         <section className="offer">
           {images && <OfferGallery images={images}/>}
