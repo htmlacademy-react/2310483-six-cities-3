@@ -1,15 +1,14 @@
-import { useState } from 'react';
 import { Cities } from '../../../shared/api/const';
 import classnames from 'classnames';
-import { useAppDispatch } from '../../../shared/api/store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../shared/api/store/hooks';
+import { getCity } from '../../../shared/api/store/selector';
 
 const CitiesList = () => {
-  const [currentCity, setCurrentCity] = useState<string>('Paris');
+  const currentCity = useAppSelector(getCity);
   const dispatch = useAppDispatch();
 
   const handleCityClick = (city: string) => {
     if (city !== currentCity) {
-      setCurrentCity(city);
       dispatch({
         type: 'city/change',
         payload: city,

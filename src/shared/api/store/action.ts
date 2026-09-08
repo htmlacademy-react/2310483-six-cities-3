@@ -6,7 +6,7 @@ export const changeCity = createAction<string>('city/change');
 
 export const loadOffers = createAction<Offer[]>('offers/load');
 
-export const requierAuth = createAction<AuthStatus>('user/requireAuth');
+export const setAuthStatus = createAction<AuthStatus>('user/setAuthStatus');
 
 export const setError = createAction<string | null>('error/set');
 

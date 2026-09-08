@@ -1,5 +1,27 @@
-import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { getToken } from './token';
+import { StatusCodes } from 'http-status-codes';
+import { errorHandler } from './error-handler';
+
+type ErrorDetailsMessage = {
+  errorType: string;
+  message: string;
+  details: [
+    {
+      property: string;
+      value: string;
+      messages: string[];
+    }
+  ];
+}
+
+const StatusCodeMapping: Record<number, boolean> = {
+  [StatusCodes.BAD_REQUEST]: true,
+  [StatusCodes.UNAUTHORIZED]: true,
+  [StatusCodes.NOT_FOUND]: true
+};
+
+const shouldShowError = (responce: AxiosResponse): boolean => !!StatusCodeMapping[responce.status];
 
 export const BASE_URL = 'https://15.design.htmlacademy.pro/six-cities' as const;
 
@@ -21,6 +43,18 @@ export const createApi = (): AxiosInstance => {
 
       return config;
     },
+  );
+
+  api.interceptors.response.use(
+    (response) => response,
+    (error: AxiosError<ErrorDetailsMessage>) => {
+      if (error.response && shouldShowError(error.response)) {
+        const details = error.response.data.details;
+        errorHandler(details[0].messages[0]);
+      }
+
+      throw error;
+    }
   );
 
   return api;
