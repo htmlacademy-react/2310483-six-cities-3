@@ -15,6 +15,7 @@ export const usePostComment = (): UsePostCommentReturnType => {
   const postComment = async (commentData: CommentData, id: string): Promise<void> => {
     setIsPosting(true);
     try {
+      setIsUpdated(false);
       const {status} = await api.post<CommentData>(`${ApiPaths.Comments}/${id}`, commentData);
       if (status === 201) {
         setIsUpdated(true);
