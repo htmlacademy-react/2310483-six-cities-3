@@ -2,8 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from './type';
 import { AxiosInstance } from 'axios';
 import { ApiPaths, AuthStatus, SHOW_ERROR_TIMEOUT } from '../const';
-import { Offer, AuthorizedUser } from '../models';
-import { loadOffers, setAuthStatus, setError, setIsOffersFetching } from './action';
+import { OfferPreview, Offer, Comment, AuthorizedUser } from '../models';
+import { loadOffers, setAuthStatus, setError, setIsFetching, loadOffer, loadNearbyOffers, loadComments, setIsNotFound } from './action';
 import { store } from './store';
 import { AuthData } from '../type';
 import { dropToken, setToken } from '../services/token';
@@ -19,12 +19,77 @@ export const fetchOffers = createAsyncThunk<
 >(
   'offers/fetch',
   async (_, {dispatch, extra: api}) => {
-    dispatch(setIsOffersFetching(true));
-    const {data} = await api.get<Offer[]>(ApiPaths.Offers);
-    dispatch(setIsOffersFetching(false));
-    dispatch(
-      loadOffers(data)
-    );
+    dispatch(setIsFetching(true));
+    const {data} = await api.get<OfferPreview[]>(ApiPaths.Offers);
+    dispatch(loadOffers(data));
+    dispatch(setIsFetching(false));
+  }
+);
+
+export const fetchFavoriteOffers = createAsyncThunk<
+  void,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'offers/favorite/fetch',
+  async (_, {dispatch, extra: api}) => {
+    dispatch(setIsFetching(true));
+    const {data} = await api.get<OfferPreview[]>(ApiPaths.Favorites);
+    dispatch(loadOffers(data));
+    dispatch(setIsFetching(false));
+
+  }
+);
+
+export const fetchOffer = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'offer/fetch',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<Offer>(`${ApiPaths.Offers}/${id}`);
+    dispatch(loadOffer(data));
+  }
+);
+
+export const fetchNearbyOffers = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'offer/nearby/fetch',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<OfferPreview[]>(`${ApiPaths.Offers}/${id}/nearby`);
+    dispatch(loadNearbyOffers(data));
+  }
+);
+
+export const fetchComments = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'comments/fetch',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<Comment[]>(`${ApiPaths.Comments}/${id}`);
+    dispatch(loadComments(data));
   }
 );
 
@@ -49,7 +114,7 @@ export const checkAuth = createAsyncThunk<
 );
 
 export const login = createAsyncThunk<
-  number,
+  void,
   AuthData,
   {
     dispatch: AppDispatch;
@@ -59,11 +124,9 @@ export const login = createAsyncThunk<
 >(
   '/login',
   async ({email, password}, {dispatch, extra: api}) => {
-    const {status, data: {token}} = await api.post<AuthorizedUser>(ApiPaths.Login, {email, password});
+    const {data: {token}} = await api.post<AuthorizedUser>(ApiPaths.Login, {email, password});
     setToken(token);
     dispatch(setAuthStatus(AuthStatus.Auth));
-
-    return status;
   }
 );
 
@@ -88,7 +151,10 @@ export const clearError = createAsyncThunk(
   'error/clear',
   () => {
     setTimeout(
-      () => store.dispatch(setError(null)),
+      () => {
+        store.dispatch(setIsNotFound(false));
+        store.dispatch(setError(null));
+      },
       SHOW_ERROR_TIMEOUT
     );
   }

@@ -1,4 +1,3 @@
-import { Offer } from '../../shared/api/models.ts';
 import Header from '../../shared/components/Header/Header.tsx';
 import EmptyOffersList from './components/EmptyOffersList.tsx';
 import Map from '../../shared/components/Map/Map.tsx';
@@ -7,24 +6,20 @@ import OffersList from './components/OffersList.tsx';
 import CitiesList from './components/CitiesList.tsx';
 import { getFilteredOffers } from '../../shared/api/store/selector.ts';
 import { useAppSelector } from '../../shared/api/store/hooks.ts';
-import Spinner from '../../shared/components/Spinner/Spinner.tsx';
-import { AuthStatus } from '../../shared/api/const.ts';
 
 const MainPage = () => {
-  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
+  const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
   const authStatus = useAppSelector((state) => state.authStatus);
   const offers = useAppSelector(getFilteredOffers);
-  const isOffersFetching = useAppSelector((state) => state.isOffersFetching);
+  const isFetching = useAppSelector((state) => state.isFetching);
 
-  if (authStatus === AuthStatus.Unknown || isOffersFetching) {
-    return (
-      <Spinner />
-    );
+  if (isFetching) {
+    return null;
   }
 
   const handleOfferHover = (id: string) => {
-    const offer = offers?.find((item) => item.id === id);
-    setSelectedOffer(offer || null);
+    const offerId = offers?.find((item) => item.id === id)?.id;
+    setSelectedOfferId(offerId || null);
   };
 
   return (
@@ -42,7 +37,7 @@ const MainPage = () => {
             offers.length > 0
               ?
               <OffersList offers={offers} handleOfferHover={handleOfferHover}>
-                <Map offers={offers} selectedOffer={selectedOffer} center={offers[0].city.location}/>
+                <Map offers={offers} selectedOfferId={selectedOfferId} center={offers[0].city.location}/>
               </OffersList>
               :
               <EmptyOffersList />

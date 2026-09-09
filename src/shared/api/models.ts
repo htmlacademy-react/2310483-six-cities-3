@@ -38,7 +38,7 @@ export type User = {
   id: string;
   name: string;
   isPro: boolean;
-  avatar: string;
+  avatarUrl: string;
 };
 
 export type AuthorizedUser = User & {

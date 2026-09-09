@@ -35,4 +35,4 @@ export const Cities = [
   'Dusseldorf',
 ] as const;
 
-export const SHOW_ERROR_TIMEOUT = 4000 as const;
+export const SHOW_ERROR_TIMEOUT = 2000 as const;

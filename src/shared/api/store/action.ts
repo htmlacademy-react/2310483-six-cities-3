@@ -1,13 +1,23 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Offer } from '../models';
+import { OfferPreview, Offer, Comment } from '../models';
 import { AuthStatus } from '../const';
 
 export const changeCity = createAction<string>('city/change');
 
-export const loadOffers = createAction<Offer[]>('offers/load');
+export const loadOffers = createAction<OfferPreview[]>('offers/load');
 
 export const setAuthStatus = createAction<AuthStatus>('user/setAuthStatus');
 
 export const setError = createAction<string | null>('error/set');
 
-export const setIsOffersFetching = createAction<boolean>('offers/setIsOffersFetching');
+export const setIsFetching = createAction<boolean>('offers/setIsOffersFetching');
+
+export const setIsNotFound = createAction<boolean>('error/isNotFound');
+
+export const loadOffer = createAction<Offer>('offer/load');
+
+export const loadNearbyOffers = createAction<OfferPreview[]>('offer/loadNearbyOffers');
+
+export const loadComments = createAction<Comment[]>('offer/loadComments');
+
+export const loadFavoriteOffers = createAction<OfferPreview[]>('offers/loadFavoriteOffers');

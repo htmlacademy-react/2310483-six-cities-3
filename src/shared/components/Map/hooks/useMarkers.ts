@@ -1,9 +1,9 @@
 import {useEffect, useRef} from 'react';
 import leaflet, { LayerGroup } from 'leaflet';
-import { Offer } from '../../../api/models';
+import { OfferPreview, Offer } from '../../../api/models';
 import {DEFAULT_MARKER, ACTIVE_MARKER} from '../const';
 
-const useMarkers = (map: leaflet.Map | null, offers: Offer[], offerId?: string) => {
+const useMarkers = (map: leaflet.Map | null, offers: Array<OfferPreview | Offer>, offerId?: string | null) => {
   const markersLayerRef = useRef<LayerGroup | null>(null);
   const markersRef = useRef<Map<string, leaflet.Marker>>(
     new globalThis.Map<string, leaflet.Marker>()

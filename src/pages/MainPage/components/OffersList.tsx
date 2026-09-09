@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
-import { Offer } from '../../../shared/api/models';
+import { OfferPreview } from '../../../shared/api/models';
 import OffersPreviewsWrapper from '../../../shared/components/OffersPreviewsWrapper/OffersPreviewsWrapper';
 import { OffersSortCb } from '../../../shared/utils/func';
 import OffersSort from './OffersSort';
 import { SortOption } from '../../../shared/api/type';
 
 type OffersListProps = {
-  offers: Offer[];
+  offers: OfferPreview[];
   handleOfferHover: (id: string) => void;
   children: React.ReactNode;
 }
 
 const OffersList = ({offers, handleOfferHover, children}: OffersListProps) => {
-  const [sortedOffers, setSortedOffers] = useState<Offer[]>([]);
+  const [sortedOffers, setSortedOffers] = useState<OfferPreview[]>([]);
   const [activeSort, setActiveSort] = useState<SortOption>('Popular');
 
   useEffect(

@@ -1,8 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { offersByCity } from './reducer';
-import { createApi } from '../services/api';
-
-const api = createApi();
+import { api } from '../services/api';
 
 export const store = configureStore({
   reducer: offersByCity,
