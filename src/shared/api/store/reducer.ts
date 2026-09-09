@@ -1,22 +1,40 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { Offer } from '../models';
-import { changeCity, loadOffers, setAuthStatus, setError, setIsOffersFetching } from './action';
+import { OfferPreview } from '../models';
+import {
+  changeCity,
+  loadOffers,
+  setAuthStatus,
+  setError,
+  setIsFetching,
+  loadOffer,
+  loadComments,
+  loadNearbyOffers,
+  loadFavoriteOffers,
+  setIsNotFound
+} from './action';
 import { AuthStatus } from '../const';
+import { OfferData } from '../type';
 
 export type Store = {
   city: string;
-  offers: Offer[];
+  offers: OfferPreview[];
+  favoriteOffers: OfferPreview[];
+  currentOfferData: OfferData;
   authStatus: AuthStatus;
   error: string | null;
-  isOffersFetching: boolean;
+  isFetching: boolean;
+  isNotFound: boolean;
 };
 
 export const initialState: Store = {
   city: 'Paris',
   offers: [],
+  favoriteOffers: [],
+  currentOfferData: {} as OfferData,
   authStatus: AuthStatus.Unknown,
   error: null,
-  isOffersFetching: false,
+  isFetching: false,
+  isNotFound: false
 };
 
 export const offersByCity = createReducer(initialState, ({addCase}) => {
@@ -32,7 +50,22 @@ export const offersByCity = createReducer(initialState, ({addCase}) => {
   addCase(setError, (state, { payload }) => {
     state.error = payload;
   });
-  addCase(setIsOffersFetching, (state, { payload }) => {
-    state.isOffersFetching = payload;
+  addCase(setIsFetching, (state, { payload }) => {
+    state.isFetching = payload;
+  });
+  addCase(loadOffer, (state, { payload }) => {
+    state.currentOfferData.offer = payload;
+  });
+  addCase(loadNearbyOffers, (state, { payload }) => {
+    state.currentOfferData.nearbyOffers = payload;
+  });
+  addCase(loadComments, (state, { payload }) => {
+    state.currentOfferData.comments = payload;
+  });
+  addCase(loadFavoriteOffers, (state, { payload }) => {
+    state.favoriteOffers = payload;
+  });
+  addCase(setIsNotFound, (state, { payload }) => {
+    state.isNotFound = payload;
   });
 });

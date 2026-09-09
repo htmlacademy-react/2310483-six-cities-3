@@ -1,4 +1,5 @@
 import {Comment} from '../../../../shared/api/models';
+import { getCommentDate } from '../../../../shared/utils/func';
 
 type OfferReviewItemProps = {
   comment: Comment;
@@ -8,7 +9,7 @@ const OfferReviewItem = ({comment}: OfferReviewItemProps) => (
   <li key={comment.id} className="reviews__item">
     <div className="reviews__user user">
       <div className="reviews__avatar-wrapper user__avatar-wrapper">
-        <img className="reviews__avatar user__avatar" src={comment.user.avatar} width="54" height="54" alt="Reviews avatar"/>
+        <img className="reviews__avatar user__avatar" src={comment.user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>
       </div>
       <span className="reviews__user-name">
         {comment.user.name}
@@ -24,7 +25,7 @@ const OfferReviewItem = ({comment}: OfferReviewItemProps) => (
       <p className="reviews__text">
         {comment.comment}
       </p>
-      <time className="reviews__time" dateTime="2019-04-24">{comment.date.toISOString()}</time>
+      <time className="reviews__time" dateTime="2019-04-24">{getCommentDate(new Date(comment.date))}</time>
     </div>
   </li>
 );

@@ -1,21 +1,28 @@
-import { PageType } from '../../shared/api/const';
+import { PageType, Paths } from '../../shared/api/const';
 import Header from '../../shared/components/Header/Header';
-import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import OfferGallery from './components/OfferGallery';
 import Map from '../../shared/components/Map/Map';
-import {useParams} from 'react-router-dom';
 import OffersPreviewsWrapper from '../../shared/components/OffersPreviewsWrapper/OffersPreviewsWrapper';
 import { useAppSelector } from '../../shared/api/store/hooks';
-import { getFilteredOffers } from '../../shared/api/store/selector';
+import OffersReviewsList from './components/OfferReviews/OfferReviewsList';
+import { useGetOffer } from './hooks/useGetOffer';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useGetNearbyOffers } from './hooks/useGetNearbyOffers';
 
 const OfferPage = () => {
-  const params = useParams();
-  const offers = useAppSelector(getFilteredOffers);
+  const {id} = useParams<{id: string}>();
+  const navigate = useNavigate();
+  const offer = useGetOffer(id);
+  const nearbyOffers = useGetNearbyOffers(id);
   const authStatus = useAppSelector((state) => state.authStatus);
-  const currentOffer = offers.find((offer) => offer.id === params.id);
-  const restOffers = offers.filter((offer) => offer.id !== currentOffer?.id);
-  if (!currentOffer) {
-    return <NotFoundPage/>;
+  const isNotFound = useAppSelector((state) => state.isNotFound);
+
+  if (isNotFound) {
+    navigate(Paths.Not_Found);
+  }
+
+  if (!offer || !id) {
+    return null;
   }
 
   const {
@@ -30,7 +37,8 @@ const OfferPage = () => {
     goods,
     host,
     images,
-  } = currentOffer;
+    location
+  } = offer;
 
   return (
     <div className="page">
@@ -93,7 +101,7 @@ const OfferPage = () => {
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="offer__avatar user__avatar" src={host.avatar} width="74" height="74" alt="Host avatar"/>
+                    <img className="offer__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="offer__user-name">
                     {host.name}
@@ -113,16 +121,14 @@ const OfferPage = () => {
                   ))}
                 </div>
               </div>
-              {
-                // comments && <OffersReviewsList comments={comments}/>
-              }
+              <OffersReviewsList authStatus={authStatus} id={id}/>
             </div>
           </div>
           <section className="offer__map map">
             <Map
-              offers={offers}
-              center={currentOffer.location}
-              selectedOffer={currentOffer}
+              offers={[...nearbyOffers.slice(0, 3), offer]}
+              center={location}
+              selectedOfferId={offer.id}
               pageType={PageType.Offer}
             />
           </section>
@@ -131,7 +137,7 @@ const OfferPage = () => {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <OffersPreviewsWrapper offers={restOffers} pageType={PageType.Offer}/>
+              <OffersPreviewsWrapper offers={nearbyOffers.slice(0, 3)} pageType={PageType.Offer}/>
             </div>
           </section>
         </div>

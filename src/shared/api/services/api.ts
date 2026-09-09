@@ -27,7 +27,7 @@ export const BASE_URL = 'https://15.design.htmlacademy.pro/six-cities' as const;
 
 export const REQUEST_TIMEOUT = 5000 as const;
 
-export const createApi = (): AxiosInstance => {
+const createApi = (): AxiosInstance => {
   const api = axios.create({
     baseURL: BASE_URL,
     timeout: REQUEST_TIMEOUT,
@@ -49,8 +49,13 @@ export const createApi = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError<ErrorDetailsMessage>) => {
       if (error.response && shouldShowError(error.response)) {
-        const details = error.response.data.details;
-        errorHandler(details[0].messages[0]);
+        const data = error.response.data;
+        const status = error.response.status;
+        if (status !== 404) {
+          errorHandler(data.details[0].messages[0], status);
+        } else if (status === 404) {
+          errorHandler(data.message, status);
+        }
       }
 
       throw error;
@@ -59,3 +64,5 @@ export const createApi = (): AxiosInstance => {
 
   return api;
 };
+
+export const api = createApi();

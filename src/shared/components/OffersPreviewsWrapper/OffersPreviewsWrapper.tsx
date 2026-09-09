@@ -1,16 +1,15 @@
 import { PageType } from '../../api/const';
-import { Offer } from '../../api/models';
+import type { OfferPreview as OfferPreviewType } from '../../api/models';
 import OfferPreview from '../OfferPreview/OfferPreview';
 import classnames from 'classnames';
 
 type OffersPreviewsWrapperProps = {
-  offers: Offer[];
+  offers: OfferPreviewType[];
   onOfferHover?: (offerId: string) => void;
   pageType?: PageType;
 }
 
 const OffersPreviewsWrapper = ({offers, onOfferHover, pageType = PageType.Main}: OffersPreviewsWrapperProps) => {
-
   const handleOfferHover = (id: string) => {
     if (!onOfferHover) {
       return;

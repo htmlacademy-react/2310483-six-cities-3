@@ -12,11 +12,6 @@
 }
 
 .description {
-  font-size: 19px;
-  margin: 0 0 39px 0;
-}
-
-.linkButton {
   font-style: oblique;
   font-weight: 700;
   font-size: 19px;
@@ -25,14 +20,4 @@
   border-radius: 3px;
   transform: skew(-15deg);
   background-color: #4481c3;
-}
-
-.linkButton:hover {
-  cursor: pointer;
-  opacity: 0.7;
-}
-
-.linkButton:active {
-  cursor: pointer;
-  opacity: 0.5;
 }
