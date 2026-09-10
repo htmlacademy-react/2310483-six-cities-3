@@ -8,7 +8,7 @@ const OfferGallery = ({images}: OfferGalleryProps) => (
       {
         images.map((url) => (
           <div key={`${url}${Math.random()}`} className="offer__image-wrapper">
-            <img className="offer__image" src="img/room.jpg" alt="Photo studio"/>
+            <img className="offer__image" src={url} alt="Photo studio"/>
           </div>
         ))
       }

@@ -42,7 +42,7 @@ const OfferPage = () => {
 
   return (
     <div className="page">
-      <Header authStatus={authStatus} />
+      <Header />
       <main className="page__main page__main--offer">
         <section className="offer">
           {images && <OfferGallery images={images}/>}

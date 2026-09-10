@@ -1,4 +1,4 @@
-import Header from '../../shared/components/Header/Header.tsx';
+import Header from '../../shared/components/Header/Header';
 import EmptyOffersList from './components/EmptyOffersList.tsx';
 import Map from '../../shared/components/Map/Map.tsx';
 import { useState } from 'react';
@@ -9,7 +9,6 @@ import { useAppSelector } from '../../shared/api/store/hooks.ts';
 
 const MainPage = () => {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
-  const authStatus = useAppSelector((state) => state.authStatus);
   const offers = useAppSelector(getFilteredOffers);
   const isFetching = useAppSelector((state) => state.isFetching);
 
@@ -24,7 +23,7 @@ const MainPage = () => {
 
   return (
     <div className="page page--gray page--main">
-      <Header authStatus={authStatus} />
+      <Header />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">

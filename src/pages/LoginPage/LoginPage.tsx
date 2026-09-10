@@ -1,18 +1,20 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Cities, Paths } from '../../shared/api/const';
-import { useAppDispatch } from '../../shared/api/store/hooks';
-import { useRef, useMemo, FormEvent} from 'react';
+import { AuthStatus, Cities, Paths } from '../../shared/api/const';
+import { useAppDispatch, useAppSelector } from '../../shared/api/store/hooks';
+import { useRef, FormEvent} from 'react';
 import { login } from '../../shared/api/store/api-action';
 
 const LoginPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const currentCity: string = useMemo(
-    () => Cities[Math.floor(Math.random() * (Cities.length))],
-    []
-  );
+  const currentCity: string = Cities[Math.floor(Math.random() * (Cities.length))];
   const dispatch = useAppDispatch();
+  const authStatus = useAppSelector((state) => state.authStatus);
   const navigate = useNavigate();
+
+  if (authStatus === AuthStatus.Auth) {
+    navigate(Paths.Main);
+  }
 
   const handleMoveToCurrentCity = () => {
     dispatch({
