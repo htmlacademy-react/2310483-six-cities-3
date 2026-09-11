@@ -8,10 +8,17 @@ import OffersReviewsList from './components/OfferReviews/OfferReviewsList';
 import { useGetOffer } from './hooks/useGetOffer';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetNearbyOffers } from './hooks/useGetNearbyOffers';
+import { useFavoriteChange } from '../../shared/api/hooks/useFavoriteChange';
+import classnames from 'classnames';
 
 const OfferPage = () => {
   const {id} = useParams<{id: string}>();
   const navigate = useNavigate();
+  const {
+    isUpdating,
+    isBookmarkActive,
+    favoriteChangeHandler
+  } = useFavoriteChange(id);
   const offer = useGetOffer(id);
   const nearbyOffers = useGetNearbyOffers(id);
   const authStatus = useAppSelector((state) => state.authStatus);
@@ -24,6 +31,10 @@ const OfferPage = () => {
   if (!offer || !id) {
     return null;
   }
+
+  const handleFavoriteChange = () => {
+    favoriteChangeHandler();
+  };
 
   const {
     title,
@@ -42,7 +53,7 @@ const OfferPage = () => {
 
   return (
     <div className="page">
-      <Header authStatus={authStatus} />
+      <Header />
       <main className="page__main page__main--offer">
         <section className="offer">
           {images && <OfferGallery images={images}/>}
@@ -58,7 +69,15 @@ const OfferPage = () => {
                 <h1 className="offer__name">
                   {title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button
+                  onClick={handleFavoriteChange}
+                  className={classnames(
+                    'offer__bookmark-button button',
+                    {'offer__bookmark-button--active': isBookmarkActive}
+                  )}
+                  type="button"
+                  disabled={isUpdating}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

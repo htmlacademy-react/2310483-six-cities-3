@@ -9,8 +9,10 @@ import {
   loadOffer,
   loadComments,
   loadNearbyOffers,
-  loadFavoriteOffers,
-  setIsNotFound
+  setIsNotFound,
+  setFavoriteOffer,
+  deleteFavoriteOffer,
+  loadFavoriteOffers
 } from './action';
 import { AuthStatus } from '../const';
 import { OfferData } from '../type';
@@ -18,7 +20,10 @@ import { OfferData } from '../type';
 export type Store = {
   city: string;
   offers: OfferPreview[];
-  favoriteOffers: OfferPreview[];
+  favoriteOffers: {
+    offers: OfferPreview[];
+    count: number;
+  };
   currentOfferData: OfferData;
   authStatus: AuthStatus;
   error: string | null;
@@ -29,7 +34,10 @@ export type Store = {
 export const initialState: Store = {
   city: 'Paris',
   offers: [],
-  favoriteOffers: [],
+  favoriteOffers: {
+    offers: [],
+    count: 0
+  },
   currentOfferData: {} as OfferData,
   authStatus: AuthStatus.Unknown,
   error: null,
@@ -62,9 +70,28 @@ export const offersByCity = createReducer(initialState, ({addCase}) => {
   addCase(loadComments, (state, { payload }) => {
     state.currentOfferData.comments = payload;
   });
+
   addCase(loadFavoriteOffers, (state, { payload }) => {
-    state.favoriteOffers = payload;
+    state.favoriteOffers = {
+      offers: payload,
+      count: payload.length
+    };
   });
+
+  addCase(setFavoriteOffer, (state, { payload }) => {
+    state.favoriteOffers = {
+      offers: [...state.favoriteOffers.offers, payload],
+      count: state.favoriteOffers.count + 1
+    };
+  });
+
+  addCase(deleteFavoriteOffer, (state, { payload }) => {
+    state.favoriteOffers = {
+      offers: state.favoriteOffers.offers.filter((offer) => offer.id !== payload),
+      count: state.favoriteOffers.count - 1
+    };
+  });
+
   addCase(setIsNotFound, (state, { payload }) => {
     state.isNotFound = payload;
   });

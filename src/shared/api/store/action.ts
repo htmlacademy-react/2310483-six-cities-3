@@ -14,6 +14,10 @@ export const setIsFetching = createAction<boolean>('offers/setIsOffersFetching')
 
 export const setIsNotFound = createAction<boolean>('error/isNotFound');
 
+export const setFavoriteOffer = createAction<OfferPreview>('offers/setFavoriteOffers');
+
+export const deleteFavoriteOffer = createAction<string>('offers/deleteFavoriteOffers');
+
 export const loadOffer = createAction<Offer>('offer/load');
 
 export const loadNearbyOffers = createAction<OfferPreview[]>('offer/loadNearbyOffers');

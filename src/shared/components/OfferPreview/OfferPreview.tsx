@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import type { OfferPreview } from '../../api/models';
 import { PageType } from '../../api/const';
+import classnames from 'classnames';
+import { useFavoriteChange } from '../../api/hooks/useFavoriteChange';
 
-const offerPreviewClassNames = {
+const offerPreviewStyles = {
   favorites: {
     card: 'favorites__card place-card',
     imageWrapper: 'favorites__image-wrapper place-card__image-wrapper',
@@ -35,11 +37,11 @@ const offerPreviewClassNames = {
 const getOfferPreviewStyles = (pageType: PageType) => {
   switch (pageType) {
     case PageType.Favorites:
-      return offerPreviewClassNames.favorites;
+      return offerPreviewStyles.favorites;
     case PageType.Offer:
-      return offerPreviewClassNames.offer;
+      return offerPreviewStyles.offer;
     case PageType.Main:
-      return offerPreviewClassNames.main;
+      return offerPreviewStyles.main;
   }
 };
 
@@ -65,8 +67,17 @@ const OfferPreview = (
     onMouseLeave,
     pageType
   }: OfferPreviewProps) => {
-
+  const {
+    favoriteChangeHandler,
+    isUpdating,
+    isBookmarkActive
+  } = useFavoriteChange(id);
   const {card, imageWrapper, imageSize, cardInfo} = getOfferPreviewStyles(pageType);
+
+  const handleFavoriteChange = () => {
+    favoriteChangeHandler();
+  };
+
   return (
     <article onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={card}>
       {
@@ -86,7 +97,15 @@ const OfferPreview = (
             <b className="place-card__price-value">&euro;{price}&nbsp;</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
+          <button
+            onClick={handleFavoriteChange}
+            className={classnames(
+              'place-card__bookmark-button button',
+              {'place-card__bookmark-button--active': isBookmarkActive}
+            )}
+            type="button"
+            disabled={isUpdating}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

@@ -1,5 +1,5 @@
 import Header from '../../shared/components/Header/Header';
-import { AuthStatus, Paths } from '../../shared/api/const';
+import { Paths } from '../../shared/api/const';
 import { useAppSelector } from '../../shared/api/store/hooks';
 import { getFavoriteOffers } from '../../shared/api/store/selector';
 import { Link } from 'react-router-dom';
@@ -7,7 +7,7 @@ import FavoriteLocationList from './components/FavoriteLocationsList';
 
 const FavoritesEmptyPageTemplate = () => (
   <div className="page page--favorites-empty">
-    <Header authStatus={AuthStatus.Auth} />
+    <Header />
     <main className="page__main page__main--favorites page__main--favorites-empty">
       <div className="page__favorites-container container">
         <section className="favorites favorites--empty">
@@ -36,7 +36,7 @@ const FavoritesPage = () => {
 
   return (
     <div className="page">
-      <Header authStatus={AuthStatus.Auth} />
+      <Header />
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">

@@ -11,5 +11,5 @@ export const getFilteredOffers = (state: State): OfferPreview[] =>
   state.offers.filter((offer) => offer.city.name === state.city);
 
 export const getFavoriteOffers = (state: State): FavoriteOffers =>
-  state.favoriteOffers
+  state.favoriteOffers.offers
     .reduce(getFavoriteOffersCb, new Map<string, OfferPreview[]>());
