@@ -8,6 +8,7 @@ const Header = () => {
   const navigate = useNavigate();
   const logout = useLogout();
   const authStatus = useAppSelector((state) => state.authStatus);
+  const {count} = useAppSelector((state) => state.favoriteOffers);
 
   const handleLogout = () => {
     logout();
@@ -45,7 +46,7 @@ const Header = () => {
                         <div className="header__avatar-wrapper user__avatar-wrapper">
                         </div>
                         <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                        <span className="header__favorite-count">3</span>
+                        <span className="header__favorite-count">{count}</span>
                       </Link>
                     </li>
                     <li className="header__nav-item">

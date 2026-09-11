@@ -3,7 +3,7 @@ import { AppDispatch, State } from './type';
 import { AxiosInstance } from 'axios';
 import { ApiPaths, AuthStatus, SHOW_ERROR_TIMEOUT } from '../const';
 import { OfferPreview, Offer, Comment, AuthorizedUser } from '../models';
-import { loadOffers, setAuthStatus, setError, setIsFetching, loadOffer, loadNearbyOffers, loadComments, setIsNotFound } from './action';
+import { loadOffers, setAuthStatus, setError, setIsFetching, loadOffer, loadNearbyOffers, loadComments, setIsNotFound, loadFavoriteOffers } from './action';
 import { store } from './store';
 import { AuthData } from '../type';
 import { dropToken, setToken } from '../services/token';
@@ -38,8 +38,8 @@ export const fetchFavoriteOffers = createAsyncThunk<
   'offers/favorite/fetch',
   async (_, {dispatch, extra: api}) => {
     dispatch(setIsFetching(true));
-    const {data} = await api.get<OfferPreview[]>(ApiPaths.Favorites);
-    dispatch(loadOffers(data));
+    const {data} = await api.get<OfferPreview[]>(ApiPaths.Favorite);
+    dispatch(loadFavoriteOffers(data));
     dispatch(setIsFetching(false));
 
   }

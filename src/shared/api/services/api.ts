@@ -18,7 +18,8 @@ type ErrorDetailsMessage = {
 const StatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.BAD_REQUEST]: true,
   [StatusCodes.UNAUTHORIZED]: true,
-  [StatusCodes.NOT_FOUND]: true
+  [StatusCodes.NOT_FOUND]: true,
+  [StatusCodes.CONFLICT]: true
 };
 
 const shouldShowError = (responce: AxiosResponse): boolean => !!StatusCodeMapping[responce.status];
@@ -51,9 +52,10 @@ const createApi = (): AxiosInstance => {
       if (error.response && shouldShowError(error.response)) {
         const data = error.response.data;
         const status = error.response.status;
-        if (status !== 404) {
+
+        if (status === 401) {
           errorHandler(data.details[0].messages[0], status);
-        } else if (status === 404) {
+        } else {
           errorHandler(data.message, status);
         }
       }

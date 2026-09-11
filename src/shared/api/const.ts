@@ -9,7 +9,7 @@ export enum Paths {
 export enum ApiPaths {
   Login = '/login',
   Logout = '/logout',
-  Favorites = '/favorite',
+  Favorite = '/favorite',
   Offers = '/offers',
   Comments = '/comments',
 }
