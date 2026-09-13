@@ -2,8 +2,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthStatus, Cities, Paths } from '../../shared/api/const';
 import { useAppDispatch, useAppSelector } from '../../shared/api/store/hooks';
 import { useRef, FormEvent} from 'react';
-import { login } from '../../shared/api/store/api-action';
+import { fetchFavoriteOffers, login } from '../../shared/api/store/api-action';
 import { getAuthStatus } from '../../shared/api/store/slices/user/selectors';
+import { changeCity } from '../../shared/api/store/slices/offers/offers-slice';
 
 const LoginPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -18,10 +19,7 @@ const LoginPage = () => {
   }
 
   const handleMoveToCurrentCity = () => {
-    dispatch({
-      type: 'city/change',
-      payload: currentCity,
-    });
+    dispatch(changeCity(currentCity));
   };
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -31,7 +29,10 @@ const LoginPage = () => {
           email: emailRef.current.value,
           password: passwordRef.current.value
         })
-      ).unwrap().then(() => navigate(Paths.Main));
+      ).unwrap().then(() => {
+        dispatch(fetchFavoriteOffers());
+        navigate(Paths.Main);
+      });
     }
   };
 

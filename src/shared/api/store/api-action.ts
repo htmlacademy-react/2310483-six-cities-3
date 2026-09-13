@@ -4,7 +4,7 @@ import { AxiosInstance } from 'axios';
 import { ApiPaths } from '../const';
 import { OfferPreview, AuthorizedUser } from '../models';
 import { AuthData } from '../type';
-import { dropToken, setToken } from '../services/token';
+import { dropToken, getToken, setToken } from '../services/token';
 
 export const fetchOffers = createAsyncThunk<
   OfferPreview[],
@@ -81,7 +81,11 @@ export const logout = createAsyncThunk<
 >(
   '/logout',
   (_, {extra: api}) => {
-    api.delete(ApiPaths.Logout);
+    api.delete(ApiPaths.Logout, {
+      headers: {
+        'x-token': getToken(),
+      },
+    });
     dropToken();
   }
 );

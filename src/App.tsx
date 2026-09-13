@@ -8,12 +8,10 @@ import PrivateRoute from './shared/components/PrivateRoute/PrivateRoute';
 import {Paths} from './shared/api/const';
 import ScrollToTop from './shared/components/ScrollToTop/ScrollToTop';
 import ErrorMessage from './shared/components/ErrorMessage/ErrorMessage';
-import Spinner from './shared/components/Spinner/Spinner';
 
 
 const App = () => (
   <BrowserRouter>
-    <Spinner/>
     <ErrorMessage/>
     <ScrollToTop/>
     <Routes>

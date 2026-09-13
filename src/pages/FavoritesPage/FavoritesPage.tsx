@@ -3,7 +3,8 @@ import { Paths } from '../../shared/api/const';
 import { useAppSelector } from '../../shared/api/store/hooks';
 import { Link } from 'react-router-dom';
 import FavoriteLocationList from './components/FavoriteLocationsList';
-import { getRenderingFavoriteOffers } from '../../shared/api/store/slices/favorites/selectors';
+import { getFavoriteOffersFetchingStatus, getRenderingFavoriteOffers } from '../../shared/api/store/slices/favorites/selectors';
+import Spinner from '../../shared/components/Spinner/Spinner';
 
 const FavoritesEmptyPageTemplate = () => (
   <div className="page page--favorites-empty">
@@ -29,6 +30,11 @@ const FavoritesEmptyPageTemplate = () => (
 
 const FavoritesPage = () => {
   const offers = useAppSelector(getRenderingFavoriteOffers);
+  const isFetching = useAppSelector(getFavoriteOffersFetchingStatus);
+
+  if (isFetching) {
+    return <Spinner/>;
+  }
 
   if (offers.size === 0) {
     return <FavoritesEmptyPageTemplate/>;

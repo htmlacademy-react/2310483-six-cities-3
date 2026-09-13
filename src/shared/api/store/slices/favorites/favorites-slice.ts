@@ -25,6 +25,10 @@ export const favoritesSlice = createSlice({
       state.offers = state.offers.filter((offer) => offer.id !== payload);
       state.count = state.count - 1;
     },
+    clearFavoriteOffers(state) {
+      state.offers = [];
+      state.count = 0;
+    },
     clearFavoritesError(state) {
       state.processing.hasError = false;
     }
@@ -51,4 +55,4 @@ export const favoritesSlice = createSlice({
   }
 });
 
-export const { setFavoriteOffer, deleteFavoriteOffer, clearFavoritesError } = favoritesSlice.actions;
+export const { setFavoriteOffer, deleteFavoriteOffer, clearFavoriteOffers, clearFavoritesError } = favoritesSlice.actions;

@@ -6,18 +6,21 @@ import OffersList from './components/OffersList.tsx';
 import CitiesList from './components/CitiesList.tsx';
 import { useAppSelector } from '../../shared/api/store/hooks.ts';
 import { getFilteredOffers, getOffersFetchingStatus } from '../../shared/api/store/slices/offers/selector.ts';
+import Spinner from '../../shared/components/Spinner/Spinner.tsx';
+import { getFavoriteOffersFetchingStatus } from '../../shared/api/store/slices/favorites/selectors.ts';
 
 const MainPage = () => {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
   const offers = useAppSelector(getFilteredOffers);
-  const isFetching = useAppSelector(getOffersFetchingStatus);
+  const isOffersFetching = useAppSelector(getOffersFetchingStatus);
+  const isFavoritesFetching = useAppSelector(getFavoriteOffersFetchingStatus);
   const handleOfferHover = useCallback((id: string) => {
     const offerId = offers?.find((item) => item.id === id)?.id;
     setSelectedOfferId(offerId || null);
   }, [offers]);
 
-  if (isFetching) {
-    return null;
+  if (isOffersFetching || isFavoritesFetching) {
+    return <Spinner/>;
   }
 
   return (

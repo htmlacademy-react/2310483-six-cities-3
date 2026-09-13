@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { ApiPaths, AuthStatus, Paths } from '../const';
 import { api } from '../services/api';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getAuthStatus } from '../store/slices/user/selectors';
 import { getFavoriteOffers } from '../store/slices/favorites/selectors';
 import { getOffers } from '../store/slices/offers/selector';
@@ -29,7 +29,14 @@ export const useFavoriteChange = (id?: string): UseSetFavoriteReturnType => {
   const isFavorite = favoriteOffers.some((favOffer) => favOffer.id === id);
   const offers = useAppSelector(getOffers);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [isBookmarkActive, setIsBookmarkActive] = useState<boolean>(isFavorite);
+  const [isBookmarkActive, setIsBookmarkActive] = useState<boolean>(false);
+
+  useEffect(
+    () => {
+      setIsBookmarkActive(isFavorite);
+    },
+    [isFavorite, id]
+  );
 
   const favoriteChangeHandler = async () => {
     if (authStatus !== AuthStatus.Auth) {

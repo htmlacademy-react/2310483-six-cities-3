@@ -9,8 +9,8 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-store.dispatch(fetchOffers());
 store.dispatch(checkAuth());
+store.dispatch(fetchOffers());
 store.dispatch(fetchFavoriteOffers());
 
 root.render(
