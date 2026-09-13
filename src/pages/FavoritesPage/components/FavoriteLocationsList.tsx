@@ -1,9 +1,9 @@
 import { PageType } from '../../../shared/api/const';
-import { FavoriteOffers } from '../../../shared/api/type';
+import { FavoriteOffersRenderingType } from '../../../shared/api/type';
 import OfferPreview from '../../../shared/components/OfferPreview/OfferPreview';
 
 type FavoriteLocationItemProps = {
-  favoriteOffers: FavoriteOffers;
+  favoriteOffers: FavoriteOffersRenderingType;
 }
 
 const FavoriteLocationList = ({favoriteOffers}: FavoriteLocationItemProps) => (

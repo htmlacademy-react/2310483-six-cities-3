@@ -2,13 +2,15 @@ import { AuthStatus, Paths } from '../../api/const';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../api/store/hooks';
 import { useLogout } from '../../api/hooks/useLogout';
+import { getAuthStatus } from '../../api/store/slices/user/selectors';
+import { getFavoritesCount } from '../../api/store/slices/favorites/selectors';
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const logout = useLogout();
-  const authStatus = useAppSelector((state) => state.authStatus);
-  const {count} = useAppSelector((state) => state.favoriteOffers);
+  const authStatus = useAppSelector(getAuthStatus);
+  const count = useAppSelector(getFavoritesCount);
 
   const handleLogout = () => {
     logout();

@@ -35,4 +35,11 @@ export const Cities = [
   'Dusseldorf',
 ] as const;
 
+export enum SlicesNames {
+  Favorites = 'FAVORITES',
+  Offers = 'OFFERS',
+  User = 'USER',
+  Comments = 'Comments',
+}
+
 export const SHOW_ERROR_TIMEOUT = 2000 as const;

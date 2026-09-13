@@ -3,6 +3,7 @@ import type { OfferPreview } from '../../api/models';
 import { PageType } from '../../api/const';
 import classnames from 'classnames';
 import { useFavoriteChange } from '../../api/hooks/useFavoriteChange';
+import React from 'react';
 
 const offerPreviewStyles = {
   favorites: {
@@ -47,12 +48,11 @@ const getOfferPreviewStyles = (pageType: PageType) => {
 
 type OfferPreviewProps = {
   offer: OfferPreview;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
+  onOfferHover?: (id: string) => void;
   pageType: PageType;
 }
 
-const OfferPreview = (
+const OfferPreview = React.memo((
   {
     offer: {
       id,
@@ -63,8 +63,7 @@ const OfferPreview = (
       previewImage,
       rating
     },
-    onMouseEnter,
-    onMouseLeave,
+    onOfferHover,
     pageType
   }: OfferPreviewProps) => {
   const {
@@ -78,8 +77,20 @@ const OfferPreview = (
     favoriteChangeHandler();
   };
 
+  const handleOfferHover = () => {
+    if (onOfferHover) {
+      onOfferHover(id);
+    }
+  };
+
+  const handleOfferBlur = () => {
+    if (onOfferHover) {
+      onOfferHover('');
+    }
+  };
+
   return (
-    <article onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={card}>
+    <article onMouseEnter={handleOfferHover} onMouseLeave={handleOfferBlur} className={card}>
       {
         isPremium &&
         <div className="place-card__mark">
@@ -125,6 +136,8 @@ const OfferPreview = (
       </div>
     </article>
   );
-};
+});
+
+OfferPreview.displayName = 'OfferPreview';
 
 export default OfferPreview;

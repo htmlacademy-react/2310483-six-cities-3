@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { offersByCity } from './reducer';
+import { rootReducer } from './root-reducer';
 import { api } from '../services/api';
 
 export const store = configureStore({
-  reducer: offersByCity,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware(
       {

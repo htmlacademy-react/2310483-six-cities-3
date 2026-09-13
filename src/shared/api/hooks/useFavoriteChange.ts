@@ -2,8 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { ApiPaths, AuthStatus, Paths } from '../const';
 import { api } from '../services/api';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setFavoriteOffer, deleteFavoriteOffer } from '../store/action';
 import { useState } from 'react';
+import { getAuthStatus } from '../store/slices/user/selectors';
+import { getFavoriteOffers } from '../store/slices/favorites/selectors';
+import { getOffers } from '../store/slices/offers/selector';
+import { deleteFavoriteOffer, setFavoriteOffer } from '../store/slices/favorites/favorites-slice';
 
 const FavoriteStatus = new Map<boolean, number>(
   [
@@ -21,10 +24,10 @@ type UseSetFavoriteReturnType = {
 export const useFavoriteChange = (id?: string): UseSetFavoriteReturnType => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const authStatus = useAppSelector((state) => state.authStatus);
-  const favoriteOffers = useAppSelector((state) => state.favoriteOffers);
-  const isFavorite = favoriteOffers.offers.some((favOffer) => favOffer.id === id);
-  const offers = useAppSelector((state) => state.offers);
+  const authStatus = useAppSelector(getAuthStatus);
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
+  const isFavorite = favoriteOffers.some((favOffer) => favOffer.id === id);
+  const offers = useAppSelector(getOffers);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isBookmarkActive, setIsBookmarkActive] = useState<boolean>(isFavorite);
 

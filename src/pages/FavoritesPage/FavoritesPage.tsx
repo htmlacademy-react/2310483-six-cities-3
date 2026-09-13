@@ -1,9 +1,9 @@
 import Header from '../../shared/components/Header/Header';
 import { Paths } from '../../shared/api/const';
 import { useAppSelector } from '../../shared/api/store/hooks';
-import { getFavoriteOffers } from '../../shared/api/store/selector';
 import { Link } from 'react-router-dom';
 import FavoriteLocationList from './components/FavoriteLocationsList';
+import { getRenderingFavoriteOffers } from '../../shared/api/store/slices/favorites/selectors';
 
 const FavoritesEmptyPageTemplate = () => (
   <div className="page page--favorites-empty">
@@ -28,7 +28,7 @@ const FavoritesEmptyPageTemplate = () => (
 );
 
 const FavoritesPage = () => {
-  const offers = useAppSelector(getFavoriteOffers);
+  const offers = useAppSelector(getRenderingFavoriteOffers);
 
   if (offers.size === 0) {
     return <FavoritesEmptyPageTemplate/>;

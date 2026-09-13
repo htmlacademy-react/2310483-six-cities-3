@@ -1,7 +1,7 @@
 import { OfferPreview } from '../api/models';
-import { FavoriteOffers } from '../api/type';
+import { FavoriteOffersRenderingType } from '../api/type';
 
-export const getFavoriteOffersCb = (acc: FavoriteOffers, offer: OfferPreview): FavoriteOffers => {
+export const getFavoriteOffersCb = (acc: FavoriteOffersRenderingType, offer: OfferPreview): FavoriteOffersRenderingType => {
   if (acc.has(offer.city.name)) {
     acc.get(offer.city.name)?.push(offer);
     return acc;

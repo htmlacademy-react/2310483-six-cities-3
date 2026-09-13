@@ -1,7 +1,8 @@
 import { Cities } from '../../../shared/api/const';
 import classnames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../../shared/api/store/hooks';
-import { getCity } from '../../../shared/api/store/selector';
+import { getCity } from '../../../shared/api/store/slices/offers/selector';
+import { changeCity } from '../../../shared/api/store/slices/offers/offers-slice';
 
 const CitiesList = () => {
   const currentCity = useAppSelector(getCity);
@@ -9,10 +10,7 @@ const CitiesList = () => {
 
   const handleCityClick = (city: string) => {
     if (city !== currentCity) {
-      dispatch({
-        type: 'city/change',
-        payload: city,
-      });
+      dispatch(changeCity(city));
     }
   };
 

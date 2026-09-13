@@ -1,25 +1,24 @@
 import Header from '../../shared/components/Header/Header';
 import EmptyOffersList from './components/EmptyOffersList.tsx';
 import Map from '../../shared/components/Map/Map.tsx';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import OffersList from './components/OffersList.tsx';
 import CitiesList from './components/CitiesList.tsx';
-import { getFilteredOffers } from '../../shared/api/store/selector.ts';
 import { useAppSelector } from '../../shared/api/store/hooks.ts';
+import { getFilteredOffers, getOffersFetchingStatus } from '../../shared/api/store/slices/offers/selector.ts';
 
 const MainPage = () => {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
   const offers = useAppSelector(getFilteredOffers);
-  const isFetching = useAppSelector((state) => state.isFetching);
+  const isFetching = useAppSelector(getOffersFetchingStatus);
+  const handleOfferHover = useCallback((id: string) => {
+    const offerId = offers?.find((item) => item.id === id)?.id;
+    setSelectedOfferId(offerId || null);
+  }, [offers]);
 
   if (isFetching) {
     return null;
   }
-
-  const handleOfferHover = (id: string) => {
-    const offerId = offers?.find((item) => item.id === id)?.id;
-    setSelectedOfferId(offerId || null);
-  };
 
   return (
     <div className="page page--gray page--main">
