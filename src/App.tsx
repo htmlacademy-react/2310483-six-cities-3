@@ -7,14 +7,12 @@ import OfferPage from './pages/OfferPage/OfferPage';
 import PrivateRoute from './shared/components/PrivateRoute/PrivateRoute';
 import {Paths} from './shared/api/const';
 import ScrollToTop from './shared/components/ScrollToTop/ScrollToTop';
-import ErrorMessage from './shared/components/ErrorMessage/ErrorMessage';
-import Spinner from './shared/components/Spinner/Spinner';
+import { ToastContainer } from 'react-toastify';
 
 
 const App = () => (
   <BrowserRouter>
-    <Spinner/>
-    <ErrorMessage/>
+    <ToastContainer position={'top-center'}/>
     <ScrollToTop/>
     <Routes>
       <Route path={Paths.Main}>

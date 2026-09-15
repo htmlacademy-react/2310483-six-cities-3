@@ -2,25 +2,24 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthStatus, Cities, Paths } from '../../shared/api/const';
 import { useAppDispatch, useAppSelector } from '../../shared/api/store/hooks';
 import { useRef, FormEvent} from 'react';
-import { login } from '../../shared/api/store/api-action';
+import { fetchFavoriteOffers, login } from '../../shared/api/store/api-action';
+import { getAuthStatus } from '../../shared/api/store/slices/user/selectors';
+import { changeCity } from '../../shared/api/store/slices/offers/offers-slice';
 
 const LoginPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const currentCity: string = Cities[Math.floor(Math.random() * (Cities.length))];
   const dispatch = useAppDispatch();
-  const authStatus = useAppSelector((state) => state.authStatus);
+  const authStatus = useAppSelector(getAuthStatus);
   const navigate = useNavigate();
+  const currentCity: string = Cities[Math.floor(Math.random() * (Cities.length))];
 
   if (authStatus === AuthStatus.Auth) {
     navigate(Paths.Main);
   }
 
   const handleMoveToCurrentCity = () => {
-    dispatch({
-      type: 'city/change',
-      payload: currentCity,
-    });
+    dispatch(changeCity(currentCity));
   };
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -30,7 +29,10 @@ const LoginPage = () => {
           email: emailRef.current.value,
           password: passwordRef.current.value
         })
-      ).unwrap().then(() => navigate(Paths.Main));
+      ).unwrap().then(() => {
+        dispatch(fetchFavoriteOffers());
+        navigate(Paths.Main);
+      });
     }
   };
 

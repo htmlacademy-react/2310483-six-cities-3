@@ -3,7 +3,7 @@ import { getToken } from './token';
 import { StatusCodes } from 'http-status-codes';
 import { errorHandler } from './error-handler';
 
-type ErrorDetailsMessage = {
+export type ErrorDetailsMessage = {
   errorType: string;
   message: string;
   details: [
@@ -50,14 +50,7 @@ const createApi = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError<ErrorDetailsMessage>) => {
       if (error.response && shouldShowError(error.response)) {
-        const data = error.response.data;
-        const status = error.response.status;
-
-        if (status === 401) {
-          errorHandler(data.details[0].messages[0], status);
-        } else {
-          errorHandler(data.message, status);
-        }
+        errorHandler(error);
       }
 
       throw error;

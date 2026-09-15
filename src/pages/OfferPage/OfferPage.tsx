@@ -10,6 +10,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useGetNearbyOffers } from './hooks/useGetNearbyOffers';
 import { useFavoriteChange } from '../../shared/api/hooks/useFavoriteChange';
 import classnames from 'classnames';
+import { getAuthStatus } from '../../shared/api/store/slices/user/selectors';
+import Spinner from '../../shared/components/Spinner/Spinner';
 
 const OfferPage = () => {
   const {id} = useParams<{id: string}>();
@@ -19,10 +21,13 @@ const OfferPage = () => {
     isBookmarkActive,
     favoriteChangeHandler
   } = useFavoriteChange(id);
-  const offer = useGetOffer(id);
+  const {offer, isFetching, isNotFound} = useGetOffer(id);
   const nearbyOffers = useGetNearbyOffers(id);
-  const authStatus = useAppSelector((state) => state.authStatus);
-  const isNotFound = useAppSelector((state) => state.isNotFound);
+  const authStatus = useAppSelector(getAuthStatus);
+
+  if (isFetching) {
+    return <Spinner/>;
+  }
 
   if (isNotFound) {
     navigate(Paths.Not_Found);

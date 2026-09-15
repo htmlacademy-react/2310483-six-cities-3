@@ -9,45 +9,26 @@ type OffersPreviewsWrapperProps = {
   pageType?: PageType;
 }
 
-const OffersPreviewsWrapper = ({offers, onOfferHover, pageType = PageType.Main}: OffersPreviewsWrapperProps) => {
-  const handleOfferHover = (id: string) => {
-    if (!onOfferHover) {
-      return;
-    }
-    onOfferHover(id);
-  };
+const OffersPreviewsWrapper = ({offers, onOfferHover, pageType = PageType.Main}: OffersPreviewsWrapperProps) => (
+  <div className={
+    classnames({
+      ['cities__places-list places__list tabs__content']: pageType === PageType.Main,
+      ['favorites__places-list places__list']: pageType === PageType.Favorites,
+      ['near-places__list places__list']: pageType === PageType.Offer,
+    })
+  }
+  >
+    {offers.map((offer) => (
+      <OfferPreview
+        onOfferHover={onOfferHover}
+        key={offer.id}
+        offer={offer}
+        pageType={pageType}
+      />
+    ))}
+  </div>
+);
 
-  const handleOfferBlur = () => {
-    if (!onOfferHover) {
-      return;
-    }
-    onOfferHover('');
-  };
-
-  return (
-    <div className={
-      classnames({
-        ['cities__places-list places__list tabs__content']: pageType === PageType.Main,
-        ['favorites__places-list places__list']: pageType === PageType.Favorites,
-        ['near-places__list places__list']: pageType === PageType.Offer,
-      })
-    }
-    >
-      {offers.map((offer) => (
-        <OfferPreview
-          onMouseEnter={
-            () => handleOfferHover(offer.id)
-          }
-          onMouseLeave={
-            () => handleOfferBlur()
-          }
-          key={offer.id}
-          offer={offer}
-          pageType={pageType}
-        />
-      ))}
-    </div>
-  );
-};
+OffersPreviewsWrapper.displayName = 'OffersPreviewsWrapper';
 
 export default OffersPreviewsWrapper;

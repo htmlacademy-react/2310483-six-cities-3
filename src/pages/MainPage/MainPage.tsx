@@ -1,25 +1,27 @@
 import Header from '../../shared/components/Header/Header';
 import EmptyOffersList from './components/EmptyOffersList.tsx';
 import Map from '../../shared/components/Map/Map.tsx';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import OffersList from './components/OffersList.tsx';
 import CitiesList from './components/CitiesList.tsx';
-import { getFilteredOffers } from '../../shared/api/store/selector.ts';
 import { useAppSelector } from '../../shared/api/store/hooks.ts';
+import { getFilteredOffers, getOffersFetchingStatus } from '../../shared/api/store/slices/offers/selector.ts';
+import Spinner from '../../shared/components/Spinner/Spinner.tsx';
+import { getFavoriteOffersFetchingStatus } from '../../shared/api/store/slices/favorites/selectors.ts';
 
 const MainPage = () => {
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
   const offers = useAppSelector(getFilteredOffers);
-  const isFetching = useAppSelector((state) => state.isFetching);
-
-  if (isFetching) {
-    return null;
-  }
-
-  const handleOfferHover = (id: string) => {
+  const isOffersFetching = useAppSelector(getOffersFetchingStatus);
+  const isFavoritesFetching = useAppSelector(getFavoriteOffersFetchingStatus);
+  const handleOfferHover = useCallback((id: string) => {
     const offerId = offers?.find((item) => item.id === id)?.id;
     setSelectedOfferId(offerId || null);
-  };
+  }, [offers]);
+
+  if (isOffersFetching || isFavoritesFetching) {
+    return <Spinner/>;
+  }
 
   return (
     <div className="page page--gray page--main">

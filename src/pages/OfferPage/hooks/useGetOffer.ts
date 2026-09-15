@@ -2,28 +2,34 @@ import { Offer } from '../../../shared/api/models';
 import { useState, useEffect } from 'react';
 import { api } from '../../../shared/api/services/api';
 import { ApiPaths } from '../../../shared/api/const';
-import { useAppDispatch } from '../../../shared/api/store/hooks';
-import { setIsFetching } from '../../../shared/api/store/action';
 
-export const useGetOffer = (id?: string): Offer | null => {
-  const dispatch = useAppDispatch();
+type UseGetOfferReturnType = {
+  offer: Offer | null;
+  isFetching: boolean;
+  isNotFound: boolean;
+}
+
+export const useGetOffer = (id?: string): UseGetOfferReturnType => {
   const [offer, setOffer] = useState<Offer | null>(null);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isNotFound, setIsNotFound] = useState<boolean>(false);
 
   useEffect(
     () => {
       let shouldUpdate = true;
       const fetchData = async () => {
-        dispatch(setIsFetching(true));
         setOffer(null);
-
+        setIsFetching(true);
         try {
           const {data} = await api.get<Offer>(`${ApiPaths.Offers}/${id}`);
 
           if (shouldUpdate) {
             setOffer(data);
           }
+        } catch {
+          setIsNotFound(true);
         } finally {
-          dispatch(setIsFetching(false));
+          setIsFetching(false);
         }
       };
       if (id) {
@@ -34,8 +40,12 @@ export const useGetOffer = (id?: string): Offer | null => {
         shouldUpdate = false;
       };
     },
-    [id, dispatch]
+    [id]
   );
 
-  return offer;
+  return {
+    offer,
+    isFetching,
+    isNotFound
+  };
 };
