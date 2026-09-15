@@ -12,15 +12,15 @@ type OffersReviewsProps = {
 const OffersReviewsList = ({authStatus, id}: OffersReviewsProps) => {
   const { isPosting, isUpdated, postComment } = usePostComment();
   const comments = useGetComments(id, isUpdated);
-
+  const sortedComments = comments.sort((c1, c2) => new Date(c2.date).getTime() - new Date(c1.date).getTime()).slice(0, 10);
   return(
     <section className="offer__reviews reviews">
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
       <ul className="reviews__list">
         {
-          comments.length !== 0
+          sortedComments.length !== 0
           &&
-          comments.map((comment) => (
+          sortedComments.map((comment) => (
             <OfferReviewItem
               key={comment.id}
               comment={comment}

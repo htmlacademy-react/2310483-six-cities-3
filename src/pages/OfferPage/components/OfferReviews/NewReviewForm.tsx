@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import React from 'react';
 import { CommentData } from '../../../../shared/api/type';
 
@@ -11,22 +11,29 @@ type NewReviewFormProps = {
 }
 
 const NewReviewForm = ({onCommentPost, isPosting, id}: NewReviewFormProps) => {
-  const commentRef = useRef<HTMLTextAreaElement>(null);
+  const [comment, setComment] = useState<string>('');
   const [rating, setRating] = useState<string | null>(null);
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    if (id && commentRef.current !== null && rating !== null) {
+    if (id && comment !== null && rating !== null) {
       onCommentPost(
         {
-          comment: commentRef.current.value,
+          comment: comment,
           rating: Number(rating)
         },
         id
       );
-      commentRef.current.value = '';
+      setComment('');
       setRating(null);
     }
+  };
+
+  const isButtonDisabled = () => {
+    if (isPosting || comment.length < 50 || comment.length > 300 || rating === null) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -44,6 +51,7 @@ const NewReviewForm = ({onCommentPost, isPosting, id}: NewReviewFormProps) => {
                 id={`${value}-stars`}
                 type="radio"
                 checked={rating === value}
+                disabled={isPosting}
               />
               <label htmlFor={`${value}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
                 <svg className="form__star-image" width="37" height="33">
@@ -54,13 +62,13 @@ const NewReviewForm = ({onCommentPost, isPosting, id}: NewReviewFormProps) => {
           ))
         }
       </div>
-      <textarea ref={commentRef} className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved">
+      <textarea disabled={isPosting} onChange={(evt) => setComment(evt.target.value)} value={comment} className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved">
       </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={isPosting}>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={isButtonDisabled()}>Submit</button>
       </div>
     </form>
   );
