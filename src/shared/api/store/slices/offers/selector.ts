@@ -9,6 +9,4 @@ export const getOffers = (state: State): OfferPreview[] => state[SlicesNames.Off
 export const getFilteredOffers = (state: State): OfferPreview[] =>
   state[SlicesNames.Offers].offers.filter((offer) => offer.city.name === state[SlicesNames.Offers].city);
 
-export const getOffersFetchingStatus = (state: State) => state[SlicesNames.Offers].processing.isFetching;
-
-export const getFetchOffersErrorStatus = (state: State) => state[SlicesNames.Offers].processing.hasError;
+export const getOffersFetchingStatus = (state: State) => state[SlicesNames.Offers].isFetching;

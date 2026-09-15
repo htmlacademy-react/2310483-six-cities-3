@@ -14,13 +14,10 @@ export const fetchOffers = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->(
-  'offers/fetch',
-  async (_, {extra: api}) => {
-    const {data} = await api.get<OfferPreview[]>(ApiPaths.Offers);
-    return data;
-  }
-);
+>('offers/fetch', async (_, { extra: api }) => {
+  const { data } = await api.get<OfferPreview[]>(ApiPaths.Offers);
+  return data;
+});
 
 export const fetchFavoriteOffers = createAsyncThunk<
   OfferPreview[],
@@ -30,14 +27,11 @@ export const fetchFavoriteOffers = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->(
-  'offers/favorite/fetch',
-  async (_, {extra: api}) => {
-    const {data} = await api.get<OfferPreview[]>(ApiPaths.Favorite);
+>('offers/favorite/fetch', async (_, { extra: api }) => {
+  const { data } = await api.get<OfferPreview[]>(ApiPaths.Favorite);
 
-    return data;
-  }
-);
+  return data;
+});
 
 export const checkAuth = createAsyncThunk<
   void,
@@ -47,12 +41,9 @@ export const checkAuth = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->(
-  '/checkAuth',
-  async (_, {extra: api}) => {
-    await api.get<AuthorizedUser>(ApiPaths.Login);
-  }
-);
+>('/checkAuth', async (_, { extra: api }) => {
+  await api.get<AuthorizedUser>(ApiPaths.Login);
+});
 
 export const login = createAsyncThunk<
   void,
@@ -62,13 +53,12 @@ export const login = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->(
-  '/login',
-  async ({email, password}, {extra: api}) => {
-    const {data: {token}} = await api.post<AuthorizedUser>(ApiPaths.Login, {email, password});
-    setToken(token);
-  }
-);
+>('/login', async ({ email, password }, { extra: api }) => {
+  const {
+    data: { token },
+  } = await api.post<AuthorizedUser>(ApiPaths.Login, { email, password });
+  setToken(token);
+});
 
 export const logout = createAsyncThunk<
   void,
@@ -78,14 +68,11 @@ export const logout = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->(
-  '/logout',
-  (_, {extra: api}) => {
-    api.delete(ApiPaths.Logout, {
-      headers: {
-        'x-token': getToken(),
-      },
-    });
-    dropToken();
-  }
-);
+>('/logout', (_, { extra: api }) => {
+  api.delete(ApiPaths.Logout, {
+    headers: {
+      'x-token': getToken(),
+    },
+  });
+  dropToken();
+});

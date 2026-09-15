@@ -12,6 +12,4 @@ export const getRenderingFavoriteOffers = (state: State): FavoriteOffersRenderin
   state[SlicesNames.Favorites].offers
     .reduce(getFavoriteOffersCb, new Map<string, OfferPreview[]>());
 
-export const getFavoriteOffersFetchingStatus = (state: State) => state[SlicesNames.Favorites].processing.isFetching;
-
-export const getFetchFavoritesErrorStatus = (state: State) => state[SlicesNames.Favorites].processing.hasError;
+export const getFavoriteOffersFetchingStatus = (state: State) => state[SlicesNames.Favorites].isFetching;

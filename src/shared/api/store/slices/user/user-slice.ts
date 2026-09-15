@@ -30,4 +30,3 @@ export const userSlice = createSlice({
       });
   }
 });
-

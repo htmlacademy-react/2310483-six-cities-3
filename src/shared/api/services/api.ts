@@ -1,8 +1,9 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { getToken } from './token';
 import { StatusCodes } from 'http-status-codes';
+import { errorHandler } from './error-handler';
 
-type ErrorDetailsMessage = {
+export type ErrorDetailsMessage = {
   errorType: string;
   message: string;
   details: [
@@ -48,6 +49,9 @@ const createApi = (): AxiosInstance => {
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError<ErrorDetailsMessage>) => {
+      if (error.response && shouldShowError(error.response)) {
+        errorHandler(error);
+      }
 
       throw error;
     }

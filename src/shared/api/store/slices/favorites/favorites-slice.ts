@@ -7,10 +7,7 @@ import { fetchFavoriteOffers } from '../../api-action';
 const initialState: FavoritesData = {
   offers: [],
   count: 0,
-  processing: {
-    hasError: false,
-    isFetching: false,
-  }
+  isFetching: false,
 };
 
 export const favoritesSlice = createSlice({
@@ -29,30 +26,21 @@ export const favoritesSlice = createSlice({
       state.offers = [];
       state.count = 0;
     },
-    clearFavoritesError(state) {
-      state.processing.hasError = false;
-    }
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFavoriteOffers.pending, (state) => {
-        state.processing.isFetching = true;
+        state.isFetching = true;
       })
       .addCase(fetchFavoriteOffers.fulfilled, (state, { payload }) => {
-        state.processing = {
-          hasError: false,
-          isFetching: false,
-        };
+        state.isFetching = false;
         state.offers = payload;
         state.count = payload.length;
       })
       .addCase(fetchFavoriteOffers.rejected, (state) => {
-        state.processing = {
-          hasError: true,
-          isFetching: false
-        };
+        state.isFetching = false;
       });
   }
 });
 
-export const { setFavoriteOffer, deleteFavoriteOffer, clearFavoriteOffers, clearFavoritesError } = favoritesSlice.actions;
+export const { setFavoriteOffer, deleteFavoriteOffer, clearFavoriteOffers } = favoritesSlice.actions;

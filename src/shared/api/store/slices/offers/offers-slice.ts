@@ -6,10 +6,7 @@ import { fetchOffers } from '../../api-action';
 const initialState: OffersData = {
   city: 'Paris',
   offers: [],
-  processing: {
-    hasError: false,
-    isFetching: false,
-  }
+  isFetching: false,
 };
 
 export const offersSlice = createSlice({
@@ -19,32 +16,20 @@ export const offersSlice = createSlice({
     changeCity(state, {payload}: PayloadAction<string>) {
       state.city = payload;
     },
-    clearOffersError(state) {
-      state.processing.hasError = false;
-    }
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchOffers.pending, (state) => {
-        state.processing = {
-          hasError: false,
-          isFetching: true,
-        };
+        state.isFetching = true;
       })
       .addCase(fetchOffers.fulfilled, (state, { payload }) => {
-        state.processing = {
-          hasError: false,
-          isFetching: false,
-        };
+        state.isFetching = false;
         state.offers = payload;
       })
       .addCase(fetchOffers.rejected, (state) => {
-        state.processing = {
-          hasError: true,
-          isFetching: false,
-        };
+        state.isFetching = false;
       });
   }
 });
 
-export const { changeCity, clearOffersError } = offersSlice.actions;
+export const { changeCity } = offersSlice.actions;
