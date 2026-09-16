@@ -1,7 +1,7 @@
 import { Cities } from '../../../shared/api/const';
 import classnames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../../shared/api/store/hooks';
-import { getCity } from '../../../shared/api/store/slices/offers/selector';
+import { getCity } from '../../../shared/api/store/slices/offers/selectors';
 import { changeCity } from '../../../shared/api/store/slices/offers/offers-slice';
 
 const CitiesList = () => {

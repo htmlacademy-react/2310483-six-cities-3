@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { useEffect, useState } from 'react';
 import { getAuthStatus } from '../store/slices/user/selectors';
 import { getFavoriteOffers } from '../store/slices/favorites/selectors';
-import { getOffers } from '../store/slices/offers/selector';
+import { getOffers } from '../store/slices/offers/selectors';
 import { deleteFavoriteOffer, setFavoriteOffer } from '../store/slices/favorites/favorites-slice';
 
 const FavoriteStatus = new Map<boolean, number>(

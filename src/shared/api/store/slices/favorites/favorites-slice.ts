@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SlicesNames } from '../../../const';
-import { FavoritesData } from '../../store-types/state-types';
+import { FavoritesData } from '../../store-types/store-types';
 import { OfferPreview } from '../../../models';
 import { fetchFavoriteOffers } from '../../api-action';
 

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthStatus, SlicesNames } from '../../../const';
-import { UserData } from '../../store-types/state-types';
+import { UserData } from '../../store-types/store-types';
 import { checkAuth, login, logout } from '../../api-action';
 
 const initialState: UserData = {
