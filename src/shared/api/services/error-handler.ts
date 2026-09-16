@@ -1,8 +1,8 @@
-import { AxiosError } from 'axios';
+import { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { ErrorDetailsMessage } from './api';
 
-export const errorHandler = ({response}: AxiosError<ErrorDetailsMessage>): void => {
+export const errorHandler = (response: AxiosResponse<ErrorDetailsMessage>): void => {
   const status = response?.status;
 
   if (status === 400) {

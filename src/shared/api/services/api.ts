@@ -50,7 +50,7 @@ const createApi = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError<ErrorDetailsMessage>) => {
       if (error.response && shouldShowError(error.response)) {
-        errorHandler(error);
+        errorHandler(error.response);
       }
 
       throw error;
