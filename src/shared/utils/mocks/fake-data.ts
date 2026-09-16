@@ -106,14 +106,14 @@ export const generateOffer = (): Offer => {
   });
 };
 
-export const generateOfferPreview = (isFavorite: boolean, cityName?: string): OfferPreview => {
+export const generateOfferPreview = (isFavorite: boolean, cityName?: string, price?: number, rating?: number): OfferPreview => {
   const offer = generateOffer();
 
   return {
     id: offer.id,
     title: offer.title,
     type: offer.type,
-    price: offer.price,
+    price: price ?? offer.price,
     city: {
       ...offer.city,
       name: cityName || offer.city.name
@@ -121,7 +121,7 @@ export const generateOfferPreview = (isFavorite: boolean, cityName?: string): Of
     location: offer.location,
     isFavorite,
     isPremium: offer.isPremium,
-    rating: offer.rating,
+    rating: rating ?? offer.rating,
     previewImage: offer.images[0],
   };
 };

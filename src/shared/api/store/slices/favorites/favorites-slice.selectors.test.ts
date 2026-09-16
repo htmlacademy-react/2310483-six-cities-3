@@ -1,12 +1,16 @@
-import { generateOffers } from '../../../../utils/mocks/fake-data';
+import { generateOfferPreview } from '../../../../utils/mocks/fake-data';
 import { SlicesNames } from '../../../const';
+import { OfferPreview } from '../../../models';
 import { getFavoriteOffers, getFavoriteOffersFetchingStatus, getFavoritesCount, getRenderingFavoriteOffers } from './selectors';
 
 
 describe('Favorites Slice Selectors', () => {
   const state = {
     [SlicesNames.Favorites]: {
-      offers: generateOffers(2, true),
+      offers: [
+        generateOfferPreview(true, 'Paris'),
+        generateOfferPreview(true, 'London'),
+      ],
       count: 0,
       isFetching: false,
     }
@@ -35,7 +39,7 @@ describe('Favorites Slice Selectors', () => {
 
   it('Should return a Map object of favorite offers', () => {
     const {offers} = state[SlicesNames.Favorites];
-    const offersMap = new Map([
+    const offersMap = new Map<string, OfferPreview[]>([
       [offers[0].city.name, [offers[0]]],
       [offers[1].city.name, [offers[1]]],
     ]);
