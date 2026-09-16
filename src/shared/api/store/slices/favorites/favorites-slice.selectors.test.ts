@@ -36,8 +36,8 @@ describe('Favorites Slice Selectors', () => {
   it('Should return a Map object of favorite offers', () => {
     const {offers} = state[SlicesNames.Favorites];
     const offersMap = new Map([
-      [offers[0].city.name, offers[0]],
-      [offers[1].city.name, offers[1]],
+      [offers[0].city.name, [offers[0]]],
+      [offers[1].city.name, [offers[1]]],
     ]);
     const result = getRenderingFavoriteOffers(state);
 

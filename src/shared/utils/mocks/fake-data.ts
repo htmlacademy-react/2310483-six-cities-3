@@ -8,6 +8,9 @@ import {
   OfferPreview,
 } from '../../api/models';
 import { Cities } from '../../api/const';
+import { Action, ThunkDispatch } from '@reduxjs/toolkit';
+import { State } from '../../api/store/store-types/store-types';
+import { api } from '../../api/services/api';
 
 const CitiesCoordinates = [
   [48.85, 2.35],
@@ -124,3 +127,5 @@ export const generateOfferPreview = (isFavorite: boolean, cityName?: string): Of
 };
 
 export const generateOffers = (count: number, isFavorite: boolean): OfferPreview[] => Array.from({length: count}, () => generateOfferPreview(isFavorite));
+
+export type AppThunkDispatch = ThunkDispatch<State, typeof api, Action>;
