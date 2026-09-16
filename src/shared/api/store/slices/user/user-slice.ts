@@ -5,6 +5,7 @@ import { checkAuth, login, logout } from '../../api-action';
 
 const initialState: UserData = {
   authStatus: AuthStatus.Unknown,
+  email: null,
 };
 
 export const userSlice = createSlice({
@@ -13,20 +14,23 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(checkAuth.fulfilled, (state) => {
+      .addCase(checkAuth.fulfilled, (state, { payload }) => {
         state.authStatus = AuthStatus.Auth;
+        state.email = payload;
       })
       .addCase(checkAuth.rejected, (state) => {
         state.authStatus = AuthStatus.No_Auth;
       })
-      .addCase(login.fulfilled, (state) => {
+      .addCase(login.fulfilled, (state, { payload }) => {
         state.authStatus = AuthStatus.Auth;
+        state.email = payload;
       })
       .addCase(login.rejected, (state) => {
         state.authStatus = AuthStatus.No_Auth;
       })
       .addCase(logout.fulfilled, (state) => {
         state.authStatus = AuthStatus.No_Auth;
+        state.email = null;
       });
   }
 });

@@ -15,6 +15,7 @@ export type OffersData = {
 
 export type UserData = {
   authStatus: AuthStatus;
+  email: string | null;
 };
 
 import { store } from '../store';

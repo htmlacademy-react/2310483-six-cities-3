@@ -2,7 +2,7 @@ import { AuthStatus, Paths } from '../../api/const';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../api/store/hooks';
 import { useLogout } from '../../api/hooks/useLogout';
-import { getAuthStatus } from '../../api/store/slices/user/selectors';
+import { getAuthStatus, getUserEmail } from '../../api/store/slices/user/selectors';
 import { getFavoritesCount } from '../../api/store/slices/favorites/selectors';
 
 const Header = () => {
@@ -11,6 +11,7 @@ const Header = () => {
   const logout = useLogout();
   const authStatus = useAppSelector(getAuthStatus);
   const count = useAppSelector(getFavoritesCount);
+  const email = useAppSelector(getUserEmail);
 
   const handleLogout = () => {
     logout();
@@ -26,7 +27,7 @@ const Header = () => {
         <div className="header__wrapper">
           <div className="header__left">
             <Link className="header__logo-link header__logo-link--active" to={Paths.Main}>
-              <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
+              <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" data-testid="header-logo"/>
             </Link>
           </div>
           <nav className="header__nav">
@@ -45,7 +46,7 @@ const Header = () => {
                       <Link className="header__nav-link header__nav-link--profile" to={Paths.Favorites}>
                         <div className="header__avatar-wrapper user__avatar-wrapper">
                         </div>
-                        <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                        <span className="header__user-name user__name">{email}</span>
                         <span className="header__favorite-count">{count}</span>
                       </Link>
                     </li>

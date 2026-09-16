@@ -42,6 +42,7 @@ export type User = {
 };
 
 export type AuthorizedUser = User & {
+  email: string;
   token: string;
 }
 
