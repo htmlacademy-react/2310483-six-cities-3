@@ -44,7 +44,7 @@ const Header = () => {
                   <>
                     <li className="header__nav-item user">
                       <Link className="header__nav-link header__nav-link--profile" to={Paths.Favorites}>
-                        <div className="header__avatar-wrapper user__avatar-wrapper">
+                        <div className="header__avatar-wrapper user__avatar-wrapper" data-testid="header-avatar">
                         </div>
                         <span className="header__user-name user__name">{email}</span>
                         <span className="header__favorite-count">{count}</span>

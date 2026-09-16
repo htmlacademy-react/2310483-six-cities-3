@@ -21,6 +21,7 @@ describe('Api actions', () => {
     store = mockStoreCreator({
       [SlicesNames.User]: {
         authStatus: AuthStatus.Unknown,
+        email: null,
       },
       [SlicesNames.Offers]: {
         city: 'Paris',
@@ -37,13 +38,14 @@ describe('Api actions', () => {
 
   describe('checkAuth', () => {
     it('Should dispatch "checkAuth.pending" and "checkAuth.fulfilled" with thunk "checkAuth"', async () => {
-      mockAxiosAdapter.onGet(ApiPaths.Login).reply(200);
+      mockAxiosAdapter.onGet(ApiPaths.Login).reply(200, { email: 'string@mail.com' });
       await store.dispatch(checkAuth());
+
       const actions = store.getActions().map(({type}) => type);
 
       expect(actions).toEqual([
         checkAuth.pending.type,
-        checkAuth.fulfilled.type
+        checkAuth.fulfilled.type,
       ]);
     });
 
