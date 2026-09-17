@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SlicesNames } from '../../../const';
-import { OffersData } from '../../store-types/state-types';
+import { OffersData } from '../../store-types/store-types';
 import { fetchOffers } from '../../api-action';
 
 const initialState: OffersData = {

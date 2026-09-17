@@ -37,7 +37,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="page page--gray page--login">
+    <div className="page page--gray page--login" data-testid="login-page">
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

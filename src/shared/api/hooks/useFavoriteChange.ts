@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { useEffect, useState } from 'react';
 import { getAuthStatus } from '../store/slices/user/selectors';
 import { getFavoriteOffers } from '../store/slices/favorites/selectors';
-import { getOffers } from '../store/slices/offers/selector';
+import { getOffers } from '../store/slices/offers/selectors';
 import { deleteFavoriteOffer, setFavoriteOffer } from '../store/slices/favorites/favorites-slice';
 
 const FavoriteStatus = new Map<boolean, number>(
@@ -18,7 +18,7 @@ const FavoriteStatus = new Map<boolean, number>(
 type UseSetFavoriteReturnType = {
   isUpdating: boolean;
   isBookmarkActive: boolean;
-  favoriteChangeHandler: () => Promise<boolean | null | undefined>;
+  favoriteChangeHandler: () => Promise<null | undefined>;
 }
 
 export const useFavoriteChange = (id?: string): UseSetFavoriteReturnType => {
@@ -54,13 +54,17 @@ export const useFavoriteChange = (id?: string): UseSetFavoriteReturnType => {
     }
 
     setIsUpdating(true);
-    const {status} = await api.post<number>(`${ApiPaths.Favorite}/${id}/${FavoriteStatus.get(!isBookmarkActive)}`);
 
-    if (status === 200 || status === 201) {
+    try {
+      const {status} = await api.post<number>(`${ApiPaths.Favorite}/${id}/${FavoriteStatus.get(!isBookmarkActive)}`);
+
+      if (status === 200 || status === 201) {
+        setIsUpdating(false);
+        setIsBookmarkActive(!isBookmarkActive);
+        dispatch(isFavorite ? deleteFavoriteOffer(id) : setFavoriteOffer({...offer, isFavorite: true}));
+      }
+    } finally {
       setIsUpdating(false);
-      setIsBookmarkActive(!isBookmarkActive);
-      dispatch(isFavorite ? deleteFavoriteOffer(id) : setFavoriteOffer({...offer, isFavorite: true}));
-      return true;
     }
   };
 

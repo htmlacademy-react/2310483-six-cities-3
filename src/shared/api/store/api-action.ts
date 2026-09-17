@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, State } from './store-types/type';
-import { AxiosInstance } from 'axios';
+import { AppDispatch, State } from './store-types/store-types';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import { ApiPaths } from '../const';
 import { OfferPreview, AuthorizedUser } from '../models';
 import { AuthData } from '../type';
@@ -34,7 +34,7 @@ export const fetchFavoriteOffers = createAsyncThunk<
 });
 
 export const checkAuth = createAsyncThunk<
-  void,
+  string,
   undefined,
   {
     dispatch: AppDispatch;
@@ -42,11 +42,13 @@ export const checkAuth = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('/checkAuth', async (_, { extra: api }) => {
-  await api.get<AuthorizedUser>(ApiPaths.Login);
+  const { data } = await api.get<AuthorizedUser>(ApiPaths.Login);
+
+  return data.email;
 });
 
 export const login = createAsyncThunk<
-  void,
+  string,
   AuthData,
   {
     dispatch: AppDispatch;
@@ -55,9 +57,11 @@ export const login = createAsyncThunk<
   }
 >('/login', async ({ email, password }, { extra: api }) => {
   const {
-    data: { token },
-  } = await api.post<AuthorizedUser>(ApiPaths.Login, { email, password });
-  setToken(token);
+    data,
+  } = await api.post<AuthorizedUser, AxiosResponse<AuthorizedUser>>(ApiPaths.Login, { email, password });
+  setToken(data.token);
+
+  return data.email;
 });
 
 export const logout = createAsyncThunk<

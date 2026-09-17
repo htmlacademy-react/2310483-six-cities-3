@@ -8,43 +8,48 @@ import PrivateRoute from './shared/components/PrivateRoute/PrivateRoute';
 import {Paths} from './shared/api/const';
 import ScrollToTop from './shared/components/ScrollToTop/ScrollToTop';
 import { ToastContainer } from 'react-toastify';
+import { getAuthStatus } from './shared/api/store/slices/user/selectors';
+import { useAppSelector } from './shared/api/store/hooks';
 
 
-const App = () => (
-  <BrowserRouter>
-    <ToastContainer position={'top-center'}/>
-    <ScrollToTop/>
-    <Routes>
-      <Route path={Paths.Main}>
-        <Route
-          index
-          element={
-            <MainPage/>
-          }
-        />
-        <Route
-          path={Paths.Login}
-          element={<LoginPage/>}
-        />
-        <Route
-          path={Paths.Not_Found}
-          element={<NotFoundPage/>}
-        />
-        <Route
-          path={Paths.Favorites}
-          element={
-            <PrivateRoute>
-              <FavoritesPage/>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={Paths.Offer}
-          element={<OfferPage/>}
-        />
-      </Route>
-    </Routes>
-  </BrowserRouter>
-);
+const App = () => {
+  const authStatus = useAppSelector(getAuthStatus);
+  return (
+    <BrowserRouter>
+      <ToastContainer position={'top-center'}/>
+      <ScrollToTop/>
+      <Routes>
+        <Route path={Paths.Main}>
+          <Route
+            index
+            element={
+              <MainPage/>
+            }
+          />
+          <Route
+            path={Paths.Login}
+            element={<LoginPage/>}
+          />
+          <Route
+            path={Paths.Not_Found}
+            element={<NotFoundPage/>}
+          />
+          <Route
+            path={Paths.Favorites}
+            element={
+              <PrivateRoute authStatus={authStatus}>
+                <FavoritesPage/>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={Paths.Offer}
+            element={<OfferPage/>}
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
 export default App;
