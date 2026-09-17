@@ -36,8 +36,8 @@ const Header = () => {
                 authStatus !== AuthStatus.Auth
                   ?
                   <li className="header__nav-item user">
-                    <Link className="header__nav-link header__nav-link--profile" to={Paths.Login}>
-                      <span className="header__login">Sign in</span>
+                    <Link className="header__nav-link header__nav-link--profile" data-testid="header-login" to={Paths.Login}>
+                      <span className="header__login" >Sign in</span>
                     </Link>
                   </li>
                   :
@@ -51,7 +51,7 @@ const Header = () => {
                       </Link>
                     </li>
                     <li className="header__nav-item">
-                      <a className="header__nav-link" onClick={handleLogout}>
+                      <a className="header__nav-link" onClick={handleLogout} data-testid="header-logout">
                         <span className="header__signout">Sign out</span>
                       </a>
                     </li>
