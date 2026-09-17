@@ -18,7 +18,7 @@ const FavoriteStatus = new Map<boolean, number>(
 type UseSetFavoriteReturnType = {
   isUpdating: boolean;
   isBookmarkActive: boolean;
-  favoriteChangeHandler: () => Promise<boolean | null | undefined>;
+  favoriteChangeHandler: () => Promise<null | undefined>;
 }
 
 export const useFavoriteChange = (id?: string): UseSetFavoriteReturnType => {
@@ -54,13 +54,17 @@ export const useFavoriteChange = (id?: string): UseSetFavoriteReturnType => {
     }
 
     setIsUpdating(true);
-    const {status} = await api.post<number>(`${ApiPaths.Favorite}/${id}/${FavoriteStatus.get(!isBookmarkActive)}`);
 
-    if (status === 200 || status === 201) {
+    try {
+      const {status} = await api.post<number>(`${ApiPaths.Favorite}/${id}/${FavoriteStatus.get(!isBookmarkActive)}`);
+
+      if (status === 200 || status === 201) {
+        setIsUpdating(false);
+        setIsBookmarkActive(!isBookmarkActive);
+        dispatch(isFavorite ? deleteFavoriteOffer(id) : setFavoriteOffer({...offer, isFavorite: true}));
+      }
+    } finally {
       setIsUpdating(false);
-      setIsBookmarkActive(!isBookmarkActive);
-      dispatch(isFavorite ? deleteFavoriteOffer(id) : setFavoriteOffer({...offer, isFavorite: true}));
-      return true;
     }
   };
 
